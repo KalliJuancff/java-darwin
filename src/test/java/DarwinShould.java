@@ -32,6 +32,6 @@ public class DarwinShould {
                 .get(nonExistentEndpoint)
                 .then()
                 .statusCode(200)
-                .body(equalTo("OK"));;
+                .body(equalTo("OK"));
     }
 }

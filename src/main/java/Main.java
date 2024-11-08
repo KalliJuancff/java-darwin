@@ -16,14 +16,17 @@ public class Main {
                 try (Socket socket = serverSocket.accept()) {
                     InputStream input = socket.getInputStream();
                     BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-                    OutputStream output = socket.getOutputStream();
-                    PrintWriter writer = new PrintWriter(output, true);
-
                     String requestLine = reader.readLine();
                     System.out.println("Received: " + requestLine);
 
-                    writer.println("HTTP/1.1 404 Not Found");
-                    writer.println();
+                    OutputStream output = socket.getOutputStream();
+                    PrintWriter writer = new PrintWriter(output, true);
+                    var endpoint = requestLine.split(" ")[1];
+                    if (endpoint.equals("/hello")) {
+                        writer.println("HTTP/1.1 200 OK");
+                    } else {
+                        writer.println("HTTP/1.1 404 Not Found");
+                    }
                 }
             }
         } catch (IOException ex) {

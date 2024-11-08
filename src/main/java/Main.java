@@ -40,6 +40,10 @@ public class Main {
         String endpoint = requestLine.endpoint();
         if (endpoint.equals("/hello")) {
             writer.println("HTTP/1.1 200 OK");
+            writer.println("Content-Type: text/plain");
+            writer.println("Content-Length: 2");
+            writer.println();
+            writer.println("OK");
         } else {
             writer.println("HTTP/1.1 404 Not Found");
             writer.println("Content-Type: text/plain");

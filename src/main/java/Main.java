@@ -39,13 +39,13 @@ public class Main {
         PrintWriter writer = new PrintWriter(output, true);
         String endpoint = requestLine.endpoint();
         if (endpoint.equals("/hello")) {
-            responseToClient(writer, 200, "OK");
+            responseToClient(writer, 200, new ResponseBody("OK"));
         } else {
-            responseToClient(writer, 404, "Not Found");
+            responseToClient(writer, 404, new ResponseBody("Not Found"));
         }
     }
 
-    private static void responseToClient(PrintWriter writer, int statusCode, String responseBody) {
+    private static void responseToClient(PrintWriter writer, int statusCode, ResponseBody responseBody) {
         writer.println("HTTP/1.1 " + statusCode + " " + responseBody);
         writer.println("Content-Type: text/plain");
         writer.println("Content-Length: " + responseBody.length());

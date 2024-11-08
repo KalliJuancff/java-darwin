@@ -42,6 +42,10 @@ public class Main {
             writer.println("HTTP/1.1 200 OK");
         } else {
             writer.println("HTTP/1.1 404 Not Found");
+            writer.println("Content-Type: text/plain");
+            writer.println("Content-Length: 9");
+            writer.println();
+            writer.println("Not Found");
         }
     }
 }

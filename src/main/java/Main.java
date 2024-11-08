@@ -23,26 +23,25 @@ public class Main {
     private static void handleClientRequest(ServerSocket serverSocket) throws IOException {
         try (Socket socket = serverSocket.accept()) {
             HttpRequest requestLine = readHttpRequest(socket);
-
-            OutputStream output = socket.getOutputStream();
-            PrintWriter writer = new PrintWriter(output, true);
-            String endpoint = requestLine.endpoint();
-            if (endpoint.equals("/hello")) {
-                writer.println("HTTP/1.1 200 OK");
-            } else {
-                writer.println("HTTP/1.1 404 Not Found");
-            }
+            System.out.println("Received: '" + requestLine + "'");
+            responseToClient(socket, requestLine);
         }
     }
 
     private static HttpRequest readHttpRequest(Socket socket) throws IOException {
         InputStream input = socket.getInputStream();
         BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-        HttpRequest requestLine = new HttpRequest(reader.readLine());
-
-        System.out.println("Received: '" + requestLine + "'");
-
-        return requestLine;
+        return new HttpRequest(reader.readLine());
     }
 
+    private static void responseToClient(Socket socket, HttpRequest requestLine) throws IOException {
+        OutputStream output = socket.getOutputStream();
+        PrintWriter writer = new PrintWriter(output, true);
+        String endpoint = requestLine.endpoint();
+        if (endpoint.equals("/hello")) {
+            writer.println("HTTP/1.1 200 OK");
+        } else {
+            writer.println("HTTP/1.1 404 Not Found");
+        }
+    }
 }

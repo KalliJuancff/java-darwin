@@ -40,11 +40,19 @@ public class Main {
         String endpoint = requestLine.endpoint();
         HttpResponse response;
         if (endpoint.equals("/hello")) {
-            response = createHttpResponse(200, new ResponseBody("OK"));
+            response = createHttpOkResponse();
         } else {
-            response = createHttpResponse(404, new ResponseBody("Not Found"));
+            response = createHttpNotFoundResponse();
         }
         writer.println(response);
+    }
+
+    private static HttpResponse createHttpOkResponse() {
+        return createHttpResponse(200, new ResponseBody("OK"));
+    }
+
+    private static HttpResponse createHttpNotFoundResponse() {
+        return createHttpResponse(404, new ResponseBody("Not Found"));
     }
 
     private static HttpResponse createHttpResponse(int statusCode, ResponseBody responseBody) {

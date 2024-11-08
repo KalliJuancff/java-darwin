@@ -22,9 +22,9 @@ public class Main {
 
     private static void handleClientRequest(ServerSocket serverSocket) throws IOException {
         try (Socket socket = serverSocket.accept()) {
-            HttpRequest requestLine = readHttpRequest(socket);
-            System.out.println("Received: '" + requestLine + "'");
-            responseToClient(socket, requestLine);
+            HttpRequest httpRequest = readHttpRequest(socket);
+            System.out.println("HTTP request received: '" + httpRequest + "'");
+            responseToClient(socket, httpRequest);
         }
     }
 

@@ -15,6 +15,6 @@ public class HttpRequest {
 
     @Override
     public String toString() {
-        return "Http request: '" + request + "'";
+        return request;
     }
 }

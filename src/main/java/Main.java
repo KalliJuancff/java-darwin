@@ -39,19 +39,11 @@ public class Main {
 
         HttpResponse response;
         if (endpoint.equals("/hello")) {
-            response = createHttpOkResponse();
+            response = createHttpResponse(200, new ResponseBody("OK"));
         } else {
-            response = createHttpNotFoundResponse();
+            response = createHttpResponse(404, new ResponseBody("Not Found"));
         }
         writeHttpResponse(socket, response);
-    }
-
-    private static HttpResponse createHttpOkResponse() {
-        return createHttpResponse(200, new ResponseBody("OK"));
-    }
-
-    private static HttpResponse createHttpNotFoundResponse() {
-        return createHttpResponse(404, new ResponseBody("Not Found"));
     }
 
     private static HttpResponse createHttpResponse(int statusCode, ResponseBody responseBody) {

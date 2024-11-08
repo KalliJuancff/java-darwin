@@ -1,6 +1,7 @@
 public class HttpResponse {
     private final int statusCode;
     private final ResponseBody responseBody;
+    private StringBuilder result;
 
     public HttpResponse(int statusCode, ResponseBody responseBody) {
         if (responseBody == null) {
@@ -13,24 +14,27 @@ public class HttpResponse {
 
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder();
-        appendLineToStringBuilder(result, "HTTP/1.1", String.valueOf(statusCode), responseBody.toString());
-        appendLineToStringBuilder(result, "Content-Type: text/plain");
-        appendLineToStringBuilder(result, "Content-Length:", String.valueOf(responseBody.length()));
-        result.append(System.lineSeparator());
-        appendLineToStringBuilder(result, responseBody.toString());
+        result = new StringBuilder();
+        appendLineWith("HTTP/1.1", String.valueOf(statusCode), responseBody.toString());
+        appendLineWith("Content-Type: text/plain");
+        appendLineWith("Content-Length:", String.valueOf(responseBody.length()));
+        appendLineWith();
+        appendLineWith(responseBody.toString());
         return result.toString();
     }
 
-    private void appendLineToStringBuilder(StringBuilder builder, String... subStrings) {
+    private void appendLineWith(String... subStrings) {
         for (String subString : subStrings) {
-            builder.append(subString)
+            result.append(subString)
                     .append(" ");
         }
 
-        // Remove last space
-        builder.deleteCharAt(builder.length() - 1);
+        // If there were sub-strings...
+        if (subStrings.length > 0) {
+            // ...remove last space
+            result.deleteCharAt(result.length() - 1);
+        }
 
-        builder.append(System.lineSeparator());
+        result.append(System.lineSeparator());
     }
 }

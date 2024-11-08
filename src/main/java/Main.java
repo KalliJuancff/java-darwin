@@ -35,16 +35,15 @@ public class Main {
     }
 
     private static void responseToClient(Socket socket, HttpRequest requestLine) throws IOException {
-        OutputStream output = socket.getOutputStream();
-        PrintWriter writer = new PrintWriter(output, true);
         String endpoint = requestLine.endpoint();
+
         HttpResponse response;
         if (endpoint.equals("/hello")) {
             response = createHttpOkResponse();
         } else {
             response = createHttpNotFoundResponse();
         }
-        writer.println(response);
+        writeHttpResponse(socket, response);
     }
 
     private static HttpResponse createHttpOkResponse() {
@@ -57,5 +56,11 @@ public class Main {
 
     private static HttpResponse createHttpResponse(int statusCode, ResponseBody responseBody) {
         return new HttpResponse(statusCode, responseBody);
+    }
+
+    private static void writeHttpResponse(Socket socket, HttpResponse response) throws IOException {
+        OutputStream output = socket.getOutputStream();
+        PrintWriter writer = new PrintWriter(output, true);
+        writer.println(response);
     }
 }

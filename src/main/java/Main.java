@@ -46,10 +46,6 @@ public class Main {
     }
 
     private static void responseToClient(PrintWriter writer, int statusCode, ResponseBody responseBody) {
-        writer.println("HTTP/1.1 " + statusCode + " " + responseBody);
-        writer.println("Content-Type: text/plain");
-        writer.println("Content-Length: " + responseBody.length());
-        writer.println();
-        writer.println(responseBody);
+        writer.println(new HttpResponse(statusCode, responseBody));
     }
 }

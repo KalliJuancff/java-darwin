@@ -22,10 +22,7 @@ public class Main {
 
     private static void handleClientRequest(ServerSocket serverSocket) throws IOException {
         try (Socket socket = serverSocket.accept()) {
-            InputStream input = socket.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-            HttpRequest requestLine = getRequestLine(reader);
-            System.out.println("Received: '" + requestLine + "'");
+            HttpRequest requestLine = readHttpRequest(socket);
 
             OutputStream output = socket.getOutputStream();
             PrintWriter writer = new PrintWriter(output, true);
@@ -38,7 +35,14 @@ public class Main {
         }
     }
 
-    private static HttpRequest getRequestLine(BufferedReader reader) throws IOException {
-        return new HttpRequest(reader.readLine());
+    private static HttpRequest readHttpRequest(Socket socket) throws IOException {
+        InputStream input = socket.getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+        HttpRequest requestLine = new HttpRequest(reader.readLine());
+
+        System.out.println("Received: '" + requestLine + "'");
+
+        return requestLine;
     }
+
 }

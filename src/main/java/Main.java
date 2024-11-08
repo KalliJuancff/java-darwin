@@ -40,6 +40,8 @@ public class Main {
         HttpResponse response;
         if (endpoint.equals("/hello")) {
             response = createHttpResponse(200, new ResponseBody("OK"));
+        } else if (endpoint.equals("/greet?name=Darwin")) {
+            response = createHttpResponse(200, new ResponseBody("Hi, Darwin!"));
         } else {
             response = createHttpResponse(404, new ResponseBody("Not Found"));
         }

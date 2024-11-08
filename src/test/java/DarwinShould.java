@@ -20,6 +20,7 @@ public class DarwinShould {
                 .body(equalTo("Not Found"));
     }
 
+
     @Test
     public void returns_a_HTTP_status_code_of_200_if_endpoint_exists() {
         RestAssured.baseURI = "http://localhost:8080";
@@ -33,5 +34,20 @@ public class DarwinShould {
                 .then()
                 .statusCode(200)
                 .body(equalTo("OK"));
+    }
+
+    @Test
+    public void retrieve_one_string_parameter() {
+        RestAssured.baseURI = "http://localhost:8080";
+        String existentEndpoint = "/greet?name=Darwin";
+
+        Main.main(new String[]{});
+
+        given()
+                .when()
+                .get(existentEndpoint)
+                .then()
+                .statusCode(200)
+                .body(equalTo("Hi, Darwin!"));
     }
 }

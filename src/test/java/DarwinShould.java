@@ -23,13 +23,13 @@ public class DarwinShould {
     @Test
     public void returns_a_HTTP_status_code_of_200_if_endpoint_exists() {
         RestAssured.baseURI = "http://localhost:8080";
-        String nonExistentEndpoint = "/hello";
+        String existentEndpoint = "/hello";
 
         Main.main(new String[]{});
 
         given()
                 .when()
-                .get(nonExistentEndpoint)
+                .get(existentEndpoint)
                 .then()
                 .statusCode(200)
                 .body(equalTo("OK"));

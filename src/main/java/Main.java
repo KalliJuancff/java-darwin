@@ -38,14 +38,16 @@ public class Main {
         OutputStream output = socket.getOutputStream();
         PrintWriter writer = new PrintWriter(output, true);
         String endpoint = requestLine.endpoint();
+        HttpResponse response;
         if (endpoint.equals("/hello")) {
-            responseToClient(writer, 200, new ResponseBody("OK"));
+            response = createHttpResponse(200, new ResponseBody("OK"));
         } else {
-            responseToClient(writer, 404, new ResponseBody("Not Found"));
+            response = createHttpResponse(404, new ResponseBody("Not Found"));
         }
+        writer.println(response);
     }
 
-    private static void responseToClient(PrintWriter writer, int statusCode, ResponseBody responseBody) {
-        writer.println(new HttpResponse(statusCode, responseBody));
+    private static HttpResponse createHttpResponse(int statusCode, ResponseBody responseBody) {
+        return new HttpResponse(statusCode, responseBody);
     }
 }

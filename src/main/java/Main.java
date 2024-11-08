@@ -39,17 +39,17 @@ public class Main {
         PrintWriter writer = new PrintWriter(output, true);
         String endpoint = requestLine.endpoint();
         if (endpoint.equals("/hello")) {
-            writer.println("HTTP/1.1 200 OK");
-            writer.println("Content-Type: text/plain");
-            writer.println("Content-Length: 2");
-            writer.println();
-            writer.println("OK");
+            responseToClient(writer, 200, "OK");
         } else {
-            writer.println("HTTP/1.1 404 Not Found");
-            writer.println("Content-Type: text/plain");
-            writer.println("Content-Length: 9");
-            writer.println();
-            writer.println("Not Found");
+            responseToClient(writer, 404, "Not Found");
         }
+    }
+
+    private static void responseToClient(PrintWriter writer, int statusCode, String responseBody) {
+        writer.println("HTTP/1.1 " + statusCode + " " + responseBody);
+        writer.println("Content-Type: text/plain");
+        writer.println("Content-Length: " + responseBody.length());
+        writer.println();
+        writer.println(responseBody);
     }
 }

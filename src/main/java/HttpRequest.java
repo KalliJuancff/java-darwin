@@ -10,7 +10,19 @@ public class HttpRequest {
     }
 
     public String endpoint() {
-        return request.split(" ")[1];
+        var result = request.split(" ")[1];
+        if (result.contains("?")) {
+            return result.split("\\?")[0];
+        }
+        return result;
+    }
+
+    public String parameterValue() {
+        try {
+            return request.split("\\?")[1].split("=")[1].split(" ")[0];
+        } catch (Exception e) {
+            return "";
+        }
     }
 
     @Override

@@ -36,16 +36,15 @@ public class Main {
 
     private static void responseToClient(Socket socket, HttpRequest requestLine) throws IOException {
         String endpoint = requestLine.endpoint();
+        System.out.println("endpoint: " + endpoint);
 
         HttpResponse response;
         if (endpoint.equals("/hello")) {
             response = createHttpResponse(200, new ResponseBody("OK"));
-        } else if (endpoint.equals("/greet?name=Darwin")) {
-            response = createHttpResponse(200, new ResponseBody("Hi, Darwin!"));
-        } else if (endpoint.equals("/greet?name=Gott")) {
-            response = createHttpResponse(200, new ResponseBody("Hi, Gott!"));
-        } else if (endpoint.equals("/greet?name=Dio")) {
-            response = createHttpResponse(200, new ResponseBody("Hi, Dio!"));
+        } else if (endpoint.equals("/greet")) {
+            String value = requestLine.parameterValue();
+            System.out.println("value: " + value);
+            response = createHttpResponse(200, new ResponseBody("Hi, " + value + "!"));
         } else {
             response = createHttpResponse(404, new ResponseBody("Not Found"));
         }

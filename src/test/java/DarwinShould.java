@@ -50,4 +50,19 @@ public class DarwinShould {
                 .statusCode(200)
                 .body(equalTo("Hi, Darwin!"));
     }
+
+    @Test
+    public void retrieve_one_string_parameter_V2() {
+        RestAssured.baseURI = "http://localhost:8080";
+        String existentEndpoint = "/greet?name=Gott";
+
+        Main.main(new String[]{});
+
+        given()
+                .when()
+                .get(existentEndpoint)
+                .then()
+                .statusCode(200)
+                .body(equalTo("Hi, Gott!"));
+    }
 }

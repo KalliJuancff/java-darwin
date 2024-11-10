@@ -42,6 +42,8 @@ public class Main {
             response = createHttpResponse(200, new ResponseBody("OK"));
         } else if (endpoint.equals("/greet?name=Darwin")) {
             response = createHttpResponse(200, new ResponseBody("Hi, Darwin!"));
+        } else if (endpoint.equals("/greet?name=Gott")) {
+            response = createHttpResponse(200, new ResponseBody("Hi, Gott!"));
         } else {
             response = createHttpResponse(404, new ResponseBody("Not Found"));
         }

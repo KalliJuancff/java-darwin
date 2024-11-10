@@ -45,7 +45,7 @@ public class Main {
         } else if (httpRequest.toString().contains("/greet?name=Darwin&name2=Dio")) {
             httpResponse = createHttpResponse(200, new ResponseBody("Hi, Darwin and Dio!"));
         } else if (httpRequest.hasPathTo("/greet")) {
-            String value = httpRequest.parameterValue();
+            String value = httpRequest.parameters()[0].value();
             httpResponse = createHttpResponse(200, new ResponseBody("Hi, " + value + "!"));
         } else {
             httpResponse = createHttpResponse(404, new ResponseBody("Not Found"));

@@ -13,12 +13,10 @@ public class HttpRequest {
         return Path.from(this).equals(Path.of(path));
     }
 
-    public String parameterValue() {
-        try {
-            return request.split("\\?")[1].split("=")[1].split(" ")[0];
-        } catch (Exception e) {
-            return "";
-        }
+    public Parameter[] parameters() {
+        Parameter[] parameters = new Parameter[1];
+        parameters[0] = new Parameter("name", request.split("\\?")[1].split("=")[1].split(" ")[0]);
+        return parameters;
     }
 
     @Override

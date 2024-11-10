@@ -1,7 +1,3 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 public class HttpRequest {
     private final String request;
 
@@ -17,26 +13,16 @@ public class HttpRequest {
         return Path.from(this).equals(Path.of(path));
     }
 
-    public List<Parameter> parameters() {
-        // Example: request := 'GET /greet?x=1&y2=z=4 HTTP/1.1'
-        if (!request.contains("?")) {
-            return Collections.emptyList();
+    public Parameters parameters() {
+        if (!hasQueryString()) {
+            return Parameters.empty();
         }
 
-        List<Parameter> result = new ArrayList<>();
+        return Parameters.from(request);
+    }
 
-        String uri = request.split(" ")[1];
-        String parametersAsString = uri.split("\\?")[1];
-        String[] parametersAndValues = parametersAsString.split("&");
-        for (String parameterAndValue : parametersAndValues) {
-            String[] parameter = parameterAndValue.split("=");
-            String key = parameter[0];
-            String value = parameter[1];
-
-            result.add(new Parameter(key, value));
-        }
-
-        return result;
+    private boolean hasQueryString() {
+        return request.contains("?");
     }
 
     @Override

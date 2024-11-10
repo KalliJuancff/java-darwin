@@ -51,9 +51,15 @@ public class Main {
             String value3 = httpRequest.parameters().get(2).value();
             httpResponse = createHttpResponse(200, new ResponseBody("Hi, " + value + " and " + value2 + " and " + value3 + "!"));
         } else if (httpRequest.toString().contains("/greet?name=Darwin&name2=Dio")) {
-            String value = httpRequest.parameters().get(0).value();
-            String value2 = httpRequest.parameters().get(1).value();
-            httpResponse = createHttpResponse(200, new ResponseBody("Hi, " + value + " and " + value2 + "!"));
+            StringBuilder names = new StringBuilder();
+            for (Parameter parameter : httpRequest.parameters()) {
+                if (!names.toString().isEmpty()) {
+                    names.append(" and ");
+                }
+                names.append(parameter.value());
+            }
+
+            httpResponse = createHttpResponse(200, new ResponseBody("Hi, " + names + "!"));
         } else if (httpRequest.hasPathTo("/greet")) {
             String value = httpRequest.parameters().getFirst().value();
             httpResponse = createHttpResponse(200, new ResponseBody("Hi, " + value + "!"));

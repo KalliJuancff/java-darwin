@@ -61,6 +61,21 @@ public class DarwinShould {
     @Test
     public void retrieve_more_than_one_string_parameter() {
         RestAssured.baseURI = "http://localhost:8080";
+        String existentEndpoint = "/greet?name=Darwin&name2=Dio";
+
+        Main.main(new String[]{});
+
+        given()
+                .when()
+                .get(existentEndpoint)
+                .then()
+                .statusCode(200)
+                .body(equalTo("Hi, Darwin and Dio!"));
+    }
+
+    @Test
+    public void retrieve_more_than_one_string_parameter_V2() {
+        RestAssured.baseURI = "http://localhost:8080";
         String existentEndpoint = "/greet?name=Darwin&name2=Dio&name3=Gud";
 
         Main.main(new String[]{});

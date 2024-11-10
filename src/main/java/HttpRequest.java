@@ -10,11 +10,7 @@ public class HttpRequest {
     }
 
     public EndPoint endpoint() {
-        var result = request.split(" ")[1];
-        if (result.contains("?")) {
-            return new EndPoint(result.split("\\?")[0]);
-        }
-        return new EndPoint(result);
+        return EndPoint.from(this);
     }
 
     public String parameterValue() {

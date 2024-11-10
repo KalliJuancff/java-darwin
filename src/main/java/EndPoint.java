@@ -11,6 +11,14 @@ public class EndPoint {
         this.endpoint = endpoint;
     }
 
+    public static EndPoint from(HttpRequest httpRequest) {
+        var result = httpRequest.toString().split(" ")[1];
+        if (result.contains("?")) {
+            return new EndPoint(result.split("\\?")[0]);
+        }
+        return new EndPoint(result);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

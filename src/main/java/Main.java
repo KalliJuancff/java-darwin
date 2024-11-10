@@ -38,19 +38,7 @@ public class Main {
         HttpResponse httpResponse;
         if (httpRequest.hasPathTo("/hello")) {
             httpResponse = createHttpResponse(200, new ResponseBody("OK"));
-        } else if (httpRequest.toString().contains("/greet?name=Darwin&name2=Dio&name3=Diu&name4=Gud&name5=Poe")) {
-            String value = httpRequest.parameters().get(0).value();
-            String value2 = httpRequest.parameters().get(1).value();
-            String value3 = httpRequest.parameters().get(2).value();
-            String value4 = httpRequest.parameters().get(3).value();
-            String value5 = httpRequest.parameters().get(4).value();
-            httpResponse = createHttpResponse(200, new ResponseBody("Hi, " + value + " and " + value2 + " and " + value3 + " and " + value4+ " and " + value5 + "!"));
-        } else if (httpRequest.toString().contains("/greet?name=Darwin&name2=Dio&name3=Gud")) {
-            String value = httpRequest.parameters().get(0).value();
-            String value2 = httpRequest.parameters().get(1).value();
-            String value3 = httpRequest.parameters().get(2).value();
-            httpResponse = createHttpResponse(200, new ResponseBody("Hi, " + value + " and " + value2 + " and " + value3 + "!"));
-        } else if (httpRequest.toString().contains("/greet?name=Darwin&name2=Dio")) {
+        } else if (httpRequest.toString().contains("/greet")) {
             StringBuilder names = new StringBuilder();
             for (Parameter parameter : httpRequest.parameters()) {
                 if (!names.toString().isEmpty()) {
@@ -60,9 +48,6 @@ public class Main {
             }
 
             httpResponse = createHttpResponse(200, new ResponseBody("Hi, " + names + "!"));
-        } else if (httpRequest.hasPathTo("/greet")) {
-            String value = httpRequest.parameters().getFirst().value();
-            httpResponse = createHttpResponse(200, new ResponseBody("Hi, " + value + "!"));
         } else {
             httpResponse = createHttpResponse(404, new ResponseBody("Not Found"));
         }

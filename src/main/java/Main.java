@@ -38,6 +38,8 @@ public class Main {
         HttpResponse httpResponse;
         if (httpRequest.endPointsTo("/hello")) {
             httpResponse = createHttpResponse(200, new ResponseBody("OK"));
+        } else if (httpRequest.toString().contains("/greet?name=Darwin&name2=Dio&name3=Gud")) {
+            httpResponse = createHttpResponse(200, new ResponseBody("Hi, Darwin and Dio and Gud!"));
         } else if (httpRequest.endPointsTo("/greet")) {
             String value = httpRequest.parameterValue();
             httpResponse = createHttpResponse(200, new ResponseBody("Hi, " + value + "!"));

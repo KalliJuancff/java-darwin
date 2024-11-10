@@ -41,8 +41,8 @@ public class DarwinShould {
     @ParameterizedTest
     @CsvSource({
             "'Darwin', 'Hi, Darwin!'",
-            "'Gott', 'Hi, Gott!'",
-            "'Dio', 'Hi, Dio!'"
+            "'Dio', 'Hi, Dio!'",
+            "'Gud', 'Hi, Gud!'"
     })
     public void retrieve_one_string_parameter(String name, String expectedBody) {
         RestAssured.baseURI = "http://localhost:8080";
@@ -56,5 +56,20 @@ public class DarwinShould {
                 .then()
                 .statusCode(200)
                 .body(equalTo(expectedBody));
+    }
+
+    @Test
+    public void retrieve_more_than_one_string_parameter() {
+        RestAssured.baseURI = "http://localhost:8080";
+        String existentEndpoint = "/greet?name=Darwin&name2=Dio&name3=Gud";
+
+        Main.main(new String[]{});
+
+        given()
+                .when()
+                .get(existentEndpoint)
+                .then()
+                .statusCode(200)
+                .body(equalTo("Hi, Darwin and Dio and Gud!"));
     }
 }

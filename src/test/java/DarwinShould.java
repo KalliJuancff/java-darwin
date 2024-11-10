@@ -10,13 +10,13 @@ public class DarwinShould {
     @Test
     public void returns_a_HTTP_status_code_of_404_and_a_Not_Found_message_if_endpoint_does_not_exist() {
         RestAssured.baseURI = "http://localhost:8080";
-        String nonExistentEndpoint = "/nonexistent-endpoint";
+        String nonExistentPath = "/nonexistent-path";
 
         Main.main(new String[]{});
 
         given()
                 .when()
-                .get(nonExistentEndpoint)
+                .get(nonExistentPath)
                 .then()
                 .statusCode(404)
                 .body(equalTo("Not Found"));
@@ -26,13 +26,13 @@ public class DarwinShould {
     @Test
     public void returns_a_HTTP_status_code_of_200_if_endpoint_exists() {
         RestAssured.baseURI = "http://localhost:8080";
-        String existentEndpoint = "/hello";
+        String existentPath = "/hello";
 
         Main.main(new String[]{});
 
         given()
                 .when()
-                .get(existentEndpoint)
+                .get(existentPath)
                 .then()
                 .statusCode(200)
                 .body(equalTo("OK"));
@@ -46,13 +46,13 @@ public class DarwinShould {
     })
     public void retrieve_one_string_parameter(String name, String expectedBody) {
         RestAssured.baseURI = "http://localhost:8080";
-        String existentEndpoint = "/greet?name=" + name;
+        String path = "/greet?name=" + name;
 
         Main.main(new String[]{});
 
         given()
                 .when()
-                .get(existentEndpoint)
+                .get(path)
                 .then()
                 .statusCode(200)
                 .body(equalTo(expectedBody));
@@ -66,13 +66,13 @@ public class DarwinShould {
     })
     public void retrieve_more_than_one_string_parameter(String queryString, String expectedNames) {
         RestAssured.baseURI = "http://localhost:8080";
-        String existentEndpoint = "/greet" + queryString;
+        String path = "/greet" + queryString;
 
         Main.main(new String[]{});
 
         given()
                 .when()
-                .get(existentEndpoint)
+                .get(path)
                 .then()
                 .statusCode(200)
                 .body(equalTo("Hi, " + expectedNames + "!"));

@@ -36,9 +36,9 @@ public class Main {
 
     private static void responseToClient(Socket socket, HttpRequest httpRequest) throws IOException {
         HttpResponse httpResponse;
-        if (httpRequest.endpointsTo("/hello")) {
+        if (httpRequest.endPointsTo("/hello")) {
             httpResponse = createHttpResponse(200, new ResponseBody("OK"));
-        } else if (httpRequest.endpointsTo("/greet")) {
+        } else if (httpRequest.endPointsTo("/greet")) {
             String value = httpRequest.parameterValue();
             httpResponse = createHttpResponse(200, new ResponseBody("Hi, " + value + "!"));
         } else {

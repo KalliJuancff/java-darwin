@@ -9,7 +9,7 @@ public class HttpRequest {
         this.request = request;
     }
 
-    public boolean endpointsTo(String endPoint) {
+    public boolean endPointsTo(String endPoint) {
         return EndPoint.of(endPoint).equals(EndPoint.from(this));
     }
 

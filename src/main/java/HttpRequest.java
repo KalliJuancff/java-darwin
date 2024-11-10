@@ -9,12 +9,12 @@ public class HttpRequest {
         this.request = request;
     }
 
-    public String endpoint() {
+    public EndPoint endpoint() {
         var result = request.split(" ")[1];
         if (result.contains("?")) {
-            return result.split("\\?")[0];
+            return new EndPoint(result.split("\\?")[0]);
         }
-        return result;
+        return new EndPoint(result);
     }
 
     public String parameterValue() {

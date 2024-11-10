@@ -38,7 +38,7 @@ public class Main {
         HttpResponse httpResponse;
         if (httpRequest.hasPathTo("/hello")) {
             httpResponse = createHttpResponse(200, new ResponseBody("OK"));
-        } else if (httpRequest.toString().contains("/greet")) {
+        } else if (httpRequest.hasPathTo("/greet")) {
             StringBuilder names = new StringBuilder();
             for (Parameter parameter : httpRequest.parameters()) {
                 if (!names.toString().isEmpty()) {

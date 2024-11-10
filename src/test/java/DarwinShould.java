@@ -1,5 +1,7 @@
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
@@ -36,10 +38,15 @@ public class DarwinShould {
                 .body(equalTo("OK"));
     }
 
-    @Test
-    public void retrieve_one_string_parameter() {
+    @ParameterizedTest
+    @CsvSource({
+            "'Darwin', 'Hi, Darwin!'",
+            "'Gott', 'Hi, Gott!'",
+            "'Dio', 'Hi, Dio!'"
+    })
+    public void retrieve_one_string_parameter(String name, String expectedBody) {
         RestAssured.baseURI = "http://localhost:8080";
-        String existentEndpoint = "/greet?name=Darwin";
+        String existentEndpoint = "/greet?name=" + name;
 
         Main.main(new String[]{});
 
@@ -48,36 +55,6 @@ public class DarwinShould {
                 .get(existentEndpoint)
                 .then()
                 .statusCode(200)
-                .body(equalTo("Hi, Darwin!"));
-    }
-
-    @Test
-    public void retrieve_one_string_parameter_V2() {
-        RestAssured.baseURI = "http://localhost:8080";
-        String existentEndpoint = "/greet?name=Gott";
-
-        Main.main(new String[]{});
-
-        given()
-                .when()
-                .get(existentEndpoint)
-                .then()
-                .statusCode(200)
-                .body(equalTo("Hi, Gott!"));
-    }
-
-    @Test
-    public void retrieve_one_string_parameter_V3() {
-        RestAssured.baseURI = "http://localhost:8080";
-        String existentEndpoint = "/greet?name=Dio";
-
-        Main.main(new String[]{});
-
-        given()
-                .when()
-                .get(existentEndpoint)
-                .then()
-                .statusCode(200)
-                .body(equalTo("Hi, Dio!"));
+                .body(equalTo(expectedBody));
     }
 }

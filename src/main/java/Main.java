@@ -36,7 +36,7 @@ public class Main {
 
     private static void responseToClient(Socket socket, HttpRequest httpRequest) throws IOException {
         HttpResponse httpResponse;
-        if (httpRequest.endPointsTo("/hello")) {
+        if (httpRequest.hasPathTo("/hello")) {
             httpResponse = createHttpResponse(200, new ResponseBody("OK"));
         } else if (httpRequest.toString().contains("/greet?name=Darwin&name2=Dio&name4=Gud&name3=Diu&name5=Poe")) {
             httpResponse = createHttpResponse(200, new ResponseBody("Hi, Darwin and Dio and Diu and Gud and Poe!"));
@@ -44,7 +44,7 @@ public class Main {
             httpResponse = createHttpResponse(200, new ResponseBody("Hi, Darwin and Dio and Gud!"));
         } else if (httpRequest.toString().contains("/greet?name=Darwin&name2=Dio")) {
             httpResponse = createHttpResponse(200, new ResponseBody("Hi, Darwin and Dio!"));
-        } else if (httpRequest.endPointsTo("/greet")) {
+        } else if (httpRequest.hasPathTo("/greet")) {
             String value = httpRequest.parameterValue();
             httpResponse = createHttpResponse(200, new ResponseBody("Hi, " + value + "!"));
         } else {

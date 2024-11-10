@@ -9,8 +9,8 @@ public class HttpRequest {
         this.request = request;
     }
 
-    public boolean endPointsTo(String endPoint) {
-        return EndPoint.from(this).equals(EndPoint.of(endPoint));
+    public boolean hasPathTo(String path) {
+        return Path.from(this).equals(Path.of(path));
     }
 
     public String parameterValue() {

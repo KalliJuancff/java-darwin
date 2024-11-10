@@ -35,12 +35,10 @@ public class Main {
     }
 
     private static void responseToClient(Socket socket, HttpRequest requestLine) throws IOException {
-        EndPoint endpoint = requestLine.endpoint();
-
         HttpResponse response;
-        if (endpoint.equals(new EndPoint("/hello"))) {
+        if (requestLine.endpoint().equals(new EndPoint("/hello"))) {
             response = createHttpResponse(200, new ResponseBody("OK"));
-        } else if (endpoint.equals(new EndPoint("/greet"))) {
+        } else if (requestLine.endpoint().equals(new EndPoint("/greet"))) {
             String value = requestLine.parameterValue();
             response = createHttpResponse(200, new ResponseBody("Hi, " + value + "!"));
         } else {

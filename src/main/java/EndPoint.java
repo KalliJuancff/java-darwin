@@ -3,20 +3,24 @@ import java.util.Objects;
 public class EndPoint {
     private final String endpoint;
 
-    public EndPoint(String endpoint) {
-        if (endpoint == null) {
-            throw new IllegalArgumentException("Endpoint cannot be null");
-        }
-
-        this.endpoint = endpoint;
-    }
-
     public static EndPoint from(HttpRequest httpRequest) {
         var result = httpRequest.toString().split(" ")[1];
         if (result.contains("?")) {
             return new EndPoint(result.split("\\?")[0]);
         }
         return new EndPoint(result);
+    }
+
+    public static EndPoint of(String endpoint) {
+        return new EndPoint(endpoint);
+    }
+
+    private EndPoint(String endpoint) {
+        if (endpoint == null) {
+            throw new IllegalArgumentException("Endpoint cannot be null");
+        }
+
+        this.endpoint = endpoint;
     }
 
     @Override

@@ -34,17 +34,17 @@ public class Main {
         return new HttpRequest(reader.readLine());
     }
 
-    private static void responseToClient(Socket socket, HttpRequest requestLine) throws IOException {
-        HttpResponse response;
-        if (requestLine.endpoint().equals(new EndPoint("/hello"))) {
-            response = createHttpResponse(200, new ResponseBody("OK"));
-        } else if (requestLine.endpoint().equals(new EndPoint("/greet"))) {
-            String value = requestLine.parameterValue();
-            response = createHttpResponse(200, new ResponseBody("Hi, " + value + "!"));
+    private static void responseToClient(Socket socket, HttpRequest httpRequest) throws IOException {
+        HttpResponse httpResponse;
+        if (httpRequest.endpointsTo("/hello")) {
+            httpResponse = createHttpResponse(200, new ResponseBody("OK"));
+        } else if (httpRequest.endpointsTo("/greet")) {
+            String value = httpRequest.parameterValue();
+            httpResponse = createHttpResponse(200, new ResponseBody("Hi, " + value + "!"));
         } else {
-            response = createHttpResponse(404, new ResponseBody("Not Found"));
+            httpResponse = createHttpResponse(404, new ResponseBody("Not Found"));
         }
-        writeHttpResponse(socket, response);
+        writeHttpResponse(socket, httpResponse);
     }
 
     private static HttpResponse createHttpResponse(int statusCode, ResponseBody responseBody) {

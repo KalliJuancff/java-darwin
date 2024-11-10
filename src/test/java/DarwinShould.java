@@ -58,10 +58,15 @@ public class DarwinShould {
                 .body(equalTo(expectedBody));
     }
 
-    @Test
-    public void retrieve_more_than_one_string_parameter() {
+    @ParameterizedTest
+    @CsvSource({
+            "'?name=Darwin&name2=Dio', 'Darwin and Dio'",
+            "'?name=Darwin&name2=Dio&name3=Gud', 'Darwin and Dio and Gud'",
+            "'?name=Darwin&name2=Dio&name3=Diu&name4=Gud&name5=Poe', 'Darwin and Dio and Diu and Gud and Poe'"
+    })
+    public void retrieve_more_than_one_string_parameter(String queryString, String expectedNames) {
         RestAssured.baseURI = "http://localhost:8080";
-        String existentEndpoint = "/greet?name=Darwin&name2=Dio";
+        String existentEndpoint = "/greet" + queryString;
 
         Main.main(new String[]{});
 
@@ -70,36 +75,6 @@ public class DarwinShould {
                 .get(existentEndpoint)
                 .then()
                 .statusCode(200)
-                .body(equalTo("Hi, Darwin and Dio!"));
-    }
-
-    @Test
-    public void retrieve_more_than_one_string_parameter_V2() {
-        RestAssured.baseURI = "http://localhost:8080";
-        String existentEndpoint = "/greet?name=Darwin&name2=Dio&name3=Gud";
-
-        Main.main(new String[]{});
-
-        given()
-                .when()
-                .get(existentEndpoint)
-                .then()
-                .statusCode(200)
-                .body(equalTo("Hi, Darwin and Dio and Gud!"));
-    }
-
-    @Test
-    public void retrieve_more_than_one_string_parameter_V3() {
-        RestAssured.baseURI = "http://localhost:8080";
-        String existentEndpoint = "/greet?name=Darwin&name2=Dio&name3=Diu&name4=Gud&name5=Poe";
-
-        Main.main(new String[]{});
-
-        given()
-                .when()
-                .get(existentEndpoint)
-                .then()
-                .statusCode(200)
-                .body(equalTo("Hi, Darwin and Dio and Diu and Gud and Poe!"));
+                .body(equalTo("Hi, " + expectedNames + "!"));
     }
 }

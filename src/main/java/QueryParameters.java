@@ -9,15 +9,15 @@ public class QueryParameters implements Iterable<QueryParameter> {
         return new QueryParameters();
     }
 
-    public static QueryParameters from(QueryString queryString) {
+    public static QueryParameters from(String queryString) {
         QueryParameters result = new QueryParameters();
         populateQueryParameters(queryString, result);
 
         return result;
     }
 
-    private static void populateQueryParameters(QueryString queryString, QueryParameters queryParameters) {
-        String[] paramsAndValues = queryString.toString().split("&");
+    private static void populateQueryParameters(String queryString, QueryParameters queryParameters) {
+        String[] paramsAndValues = queryString.split("&");
         for (String paramAndValue : paramsAndValues) {
             String[] tokens = paramAndValue.split("=");
             String key = tokens[0];

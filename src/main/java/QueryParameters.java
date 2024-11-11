@@ -9,12 +9,10 @@ public class QueryParameters implements Iterable<QueryParameter> {
         return new QueryParameters();
     }
 
-    public static QueryParameters from(String uri) {
+    public static QueryParameters from(String queryString) {
         QueryParameters result = new QueryParameters();
 
-        // Example: request := 'GET /greet?x=1&y2=z=4 HTTP/1.1'
-        String parametersAsString = uri.split("\\?")[1];
-        String[] parametersAndValues = parametersAsString.split("&");
+        String[] parametersAndValues = queryString.split("&");
         for (String parameterAndValue : parametersAndValues) {
             String[] parameter = parameterAndValue.split("=");
             String key = parameter[0];

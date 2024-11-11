@@ -19,12 +19,21 @@ public class Uri {
         return new Path(uri);
     }
 
+    public String queryString() {
+        if (hasQueryString()) {
+            String[] uriParts = uri.split("\\?");
+            return uriParts[1];
+        }
+
+        return "";
+    }
+
     public QueryParameters queryParameters() {
         if (!hasQueryString()) {
             return QueryParameters.empty();
         }
 
-        return QueryParameters.from(uri);
+        return QueryParameters.from(queryString());
     }
 
     private boolean hasQueryString() {

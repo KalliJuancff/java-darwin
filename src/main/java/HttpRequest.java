@@ -1,5 +1,7 @@
 public class HttpRequest {
     private final String requestLine;
+    private final String[] requestLineParts;
+    private final Uri uri;
 
     public HttpRequest(String requestLine) {
         if (requestLine == null) {
@@ -7,6 +9,8 @@ public class HttpRequest {
         }
 
         this.requestLine = requestLine;
+        requestLineParts = requestLine.split(" ");
+        uri = new Uri(requestLineParts[1]);
     }
 
     public boolean isPathEqualTo(String path) {
@@ -14,15 +18,11 @@ public class HttpRequest {
     }
 
     public QueryParameters queryParameters() {
-        if (!hasQueryString()) {
+        if (!uri.hasQueryString()) {
             return QueryParameters.empty();
         }
 
         return QueryParameters.from(requestLine);
-    }
-
-    private boolean hasQueryString() {
-        return requestLine.contains("?");
     }
 
     @Override

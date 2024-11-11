@@ -36,9 +36,9 @@ public class Main {
 
     private static void responseToClient(Socket socket, HttpRequest httpRequest) throws IOException {
         HttpResponse httpResponse;
-        if (httpRequest.hasPathTo("/hello")) {
+        if (httpRequest.isPathEqualTo("/hello")) {
             httpResponse = createHttpResponse(200, "OK");
-        } else if (httpRequest.hasPathTo("/greet")) {
+        } else if (httpRequest.isPathEqualTo("/greet")) {
             StringBuilder names = extractNamesFrom(httpRequest);
             httpResponse = createHttpResponse(200, "Hi, " + names + "!");
         } else {

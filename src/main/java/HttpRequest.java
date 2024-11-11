@@ -9,7 +9,7 @@ public class HttpRequest {
         this.requestLine = requestLine;
     }
 
-    public boolean hasPathTo(String path) {
+    public boolean isPathEqualTo(String path) {
         return Path.from(this).equals(Path.of(path));
     }
 

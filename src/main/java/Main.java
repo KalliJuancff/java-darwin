@@ -39,14 +39,7 @@ public class Main {
         if (httpRequest.hasPathTo("/hello")) {
             httpResponse = createHttpResponse(200, "OK");
         } else if (httpRequest.hasPathTo("/greet")) {
-            StringBuilder names = new StringBuilder();
-            for (Parameter parameter : httpRequest.parameters()) {
-                if (!names.toString().isEmpty()) {
-                    names.append(" and ");
-                }
-                names.append(parameter.value());
-            }
-
+            StringBuilder names = extractNamesFrom(httpRequest);
             httpResponse = createHttpResponse(200, "Hi, " + names + "!");
         } else {
             httpResponse = createHttpResponse(404, "Not Found");
@@ -56,6 +49,17 @@ public class Main {
 
     private static HttpResponse createHttpResponse(int statusCode, String responseMessage) {
         return new HttpResponse(statusCode, new ResponseBody(responseMessage));
+    }
+
+    private static StringBuilder extractNamesFrom(HttpRequest httpRequest) {
+        StringBuilder names = new StringBuilder();
+        for (Parameter parameter : httpRequest.parameters()) {
+            if (!names.toString().isEmpty()) {
+                names.append(" and ");
+            }
+            names.append(parameter.value());
+        }
+        return names;
     }
 
     private static void writeHttpResponse(Socket socket, HttpResponse response) throws IOException {

@@ -9,6 +9,14 @@ public class QueryString {
         this.queryString = queryString;
     }
 
+    public QueryParameters queryParameters() {
+        if (queryString.isBlank()) {
+            return QueryParameters.empty();
+        }
+
+        return QueryParameters.from(this);
+    }
+
     @Override
     public String toString() {
         return queryString;

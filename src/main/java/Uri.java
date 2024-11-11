@@ -30,14 +30,6 @@ public class Uri {
     }
 
     public QueryParameters queryParameters() {
-        if (!hasQueryString()) {
-            return QueryParameters.empty();
-        }
-
-        return QueryParameters.from(queryString);
-    }
-
-    private boolean hasQueryString() {
-        return uri.contains("?");
+        return queryString.queryParameters();
     }
 }

@@ -1,6 +1,5 @@
 public class HttpRequest {
     private final String requestLine;
-    private final String[] requestLineParts;
     private final Uri uri;
 
     public HttpRequest(String requestLine) {
@@ -9,7 +8,8 @@ public class HttpRequest {
         }
 
         this.requestLine = requestLine;
-        requestLineParts = requestLine.split(" ");
+
+        String[] requestLineParts = requestLine.split(" ");
         uri = new Uri(requestLineParts[1]);
     }
 
@@ -18,11 +18,7 @@ public class HttpRequest {
     }
 
     public QueryParameters queryParameters() {
-        if (!uri.hasQueryString()) {
-            return QueryParameters.empty();
-        }
-
-        return QueryParameters.from(requestLine);
+        return uri.queryParameters();
     }
 
     @Override

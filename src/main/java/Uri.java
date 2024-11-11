@@ -9,7 +9,15 @@ public class Uri {
         this.uri = uri;
     }
 
-    public boolean hasQueryString() {
+    public QueryParameters queryParameters() {
+        if (!hasQueryString()) {
+            return QueryParameters.empty();
+        }
+
+        return QueryParameters.from(uri);
+    }
+
+    private boolean hasQueryString() {
         return uri.contains("?");
     }
 }

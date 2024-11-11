@@ -1,5 +1,5 @@
-public record Parameter(String key, String value) {
-    public Parameter {
+public record QueryParameter(String key, String value) {
+    public QueryParameter {
         if (key == null) {
             throw new IllegalArgumentException("Key cannot be null");
         }

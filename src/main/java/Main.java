@@ -53,11 +53,11 @@ public class Main {
 
     private static StringBuilder extractNamesFrom(HttpRequest httpRequest) {
         StringBuilder names = new StringBuilder();
-        for (Parameter parameter : httpRequest.parameters()) {
+        for (QueryParameter queryParameter : httpRequest.parameters()) {
             if (!names.toString().isEmpty()) {
                 names.append(" and ");
             }
-            names.append(parameter.value());
+            names.append(queryParameter.value());
         }
         return names;
     }

@@ -2,8 +2,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class Parameters implements Iterable<Parameter> {
-    private final List<Parameter> parameters = new ArrayList<>();
+public class Parameters implements Iterable<QueryParameter> {
+    private final List<QueryParameter> queryParameters = new ArrayList<>();
 
     public static Parameters empty() {
         return new Parameters();
@@ -28,11 +28,11 @@ public class Parameters implements Iterable<Parameter> {
     }
 
     private void add(String key, String value) {
-        parameters.add(new Parameter(key, value));
+        queryParameters.add(new QueryParameter(key, value));
     }
 
     @Override
-    public Iterator<Parameter> iterator() {
-        return parameters.iterator();
+    public Iterator<QueryParameter> iterator() {
+        return queryParameters.iterator();
     }
 }

@@ -10,13 +10,13 @@ public class Uri {
     }
 
     public Path path() {
-        if (!hasQueryString()) {
-            return Path.of(uri);
+        if (hasQueryString()) {
+            String[] uriParts = uri.split("\\?");
+            String path = uriParts[0];
+            return Path.of(path);
         }
 
-        String[] uriParts = uri.split("\\?");
-        String path = uriParts[0];
-        return Path.of(path);
+        return Path.of(uri);
     }
 
     public QueryParameters queryParameters() {

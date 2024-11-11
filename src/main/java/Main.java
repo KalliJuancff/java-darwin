@@ -35,16 +35,19 @@ public class Main {
     }
 
     private static void responseToClient(Socket socket, HttpRequest httpRequest) throws IOException {
-        HttpResponse httpResponse;
-        if (httpRequest.isPathEqualTo("/hello")) {
-            httpResponse = createHttpResponse(200, "OK");
-        } else if (httpRequest.isPathEqualTo("/greet")) {
-            StringBuilder names = extractNamesFrom(httpRequest);
-            httpResponse = createHttpResponse(200, "Hi, " + names + "!");
-        } else {
-            httpResponse = createHttpResponse(404, "Not Found");
-        }
+        HttpResponse httpResponse = createHttpResponse(httpRequest);
         writeHttpResponse(socket, httpResponse);
+    }
+
+    private static HttpResponse createHttpResponse(HttpRequest httpRequest) {
+        if (httpRequest.isPathEqualTo("/hello")) {
+            return createHttpResponse(200, "OK");
+        }
+        if (httpRequest.isPathEqualTo("/greet")) {
+            StringBuilder names = extractNamesFrom(httpRequest);
+            return createHttpResponse(200, "Hi, " + names + "!");
+        }
+        return createHttpResponse(404, "Not Found");
     }
 
     private static HttpResponse createHttpResponse(int statusCode, String responseMessage) {

@@ -4,7 +4,7 @@ public class Path {
     private final String path;
 
     public static Path from(HttpRequest httpRequest) {
-        var result = httpRequest.toString().split(" ")[1];
+        var result = httpRequest.requestLine().split(" ")[1];
         if (result.contains("?")) {
             return new Path(result.split("\\?")[0]);
         }

@@ -3,7 +3,11 @@ public class Uri {
     private Path path;
     private QueryString queryString;
 
-    public Uri(String uri) {
+    public static Uri from(String uri) {
+        return new Uri(uri);
+    }
+
+    private Uri(String uri) {
         if (uri == null) {
             throw new IllegalArgumentException("Uri cannot be null");
         }

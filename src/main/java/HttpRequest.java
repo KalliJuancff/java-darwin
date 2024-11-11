@@ -19,7 +19,7 @@ public class HttpRequest {
 
     private void initializeHttpRequestParts(String requestLine) {
         String[] requestLineParts = requestLine.split(" ");
-        uri = new Uri(requestLineParts[1]);
+        uri = Uri.from(requestLineParts[1]);
     }
 
     public boolean hasPathEqualTo(String path) {

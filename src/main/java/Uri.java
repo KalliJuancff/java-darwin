@@ -1,5 +1,7 @@
 public class Uri {
     private final String uri;
+    private Path path;
+    private String queryString;
 
     public Uri(String uri) {
         if (uri == null) {
@@ -7,25 +9,27 @@ public class Uri {
         }
 
         this.uri = uri;
+
+        initializeUriParts();
+    }
+
+    private void initializeUriParts() {
+        String[] uriParts = uri.split("\\?");
+
+        path = new Path(uriParts[0]);
+
+        queryString = "";
+        if (uriParts.length > 1) {
+            queryString = uriParts[1];
+        }
     }
 
     public Path path() {
-        if (hasQueryString()) {
-            String[] uriParts = uri.split("\\?");
-            String path = uriParts[0];
-            return new Path(path);
-        }
-
-        return new Path(uri);
+        return path;
     }
 
     public String queryString() {
-        if (hasQueryString()) {
-            String[] uriParts = uri.split("\\?");
-            return uriParts[1];
-        }
-
-        return "";
+        return queryString;
     }
 
     public QueryParameters queryParameters() {

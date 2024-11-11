@@ -1,6 +1,6 @@
 public class HttpRequest {
     private final String requestLine;
-    private final Uri uri;
+    private Uri uri;
 
     // Example: requestLine := 'GET /greet?x=1&y2=z=4 HTTP/1.1'
     public static HttpRequest from(String requestLine) {
@@ -14,6 +14,10 @@ public class HttpRequest {
 
         this.requestLine = requestLine;
 
+        initializeHttpRequestParts(requestLine);
+    }
+
+    private void initializeHttpRequestParts(String requestLine) {
         String[] requestLineParts = requestLine.split(" ");
         uri = new Uri(requestLineParts[1]);
     }

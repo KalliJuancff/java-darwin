@@ -3,7 +3,11 @@ public class HttpRequest {
     private final Uri uri;
 
     // Example: requestLine := 'GET /greet?x=1&y2=z=4 HTTP/1.1'
-    public HttpRequest(String requestLine) {
+    public static HttpRequest from(String requestLine) {
+        return new HttpRequest(requestLine);
+    }
+
+    private HttpRequest(String requestLine) {
         if (requestLine == null) {
             throw new IllegalArgumentException("Request line cannot be null");
         }

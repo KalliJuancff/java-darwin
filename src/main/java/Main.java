@@ -31,7 +31,7 @@ public class Main {
     private static HttpRequest readHttpRequest(Socket socket) throws IOException {
         InputStream input = socket.getInputStream();
         BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-        return new HttpRequest(reader.readLine());
+        return HttpRequest.from(reader.readLine());
     }
 
     private static void responseToClient(Socket socket, HttpRequest httpRequest) throws IOException {

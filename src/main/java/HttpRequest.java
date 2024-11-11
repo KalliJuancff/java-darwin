@@ -14,7 +14,7 @@ public class HttpRequest {
         uri = new Uri(requestLineParts[1]);
     }
 
-    public boolean isPathEqualTo(String path) {
+    public boolean hasPathEqualTo(String path) {
         return uri.hasPathEqualTo(new Path(path));
     }
 

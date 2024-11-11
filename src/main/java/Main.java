@@ -40,10 +40,10 @@ public class Main {
     }
 
     private static HttpResponse createHttpResponse(HttpRequest httpRequest) {
-        if (httpRequest.isPathEqualTo("/hello")) {
+        if (httpRequest.hasPathEqualTo("/hello")) {
             return createHttpResponse(200, "OK");
         }
-        if (httpRequest.isPathEqualTo("/greet")) {
+        if (httpRequest.hasPathEqualTo("/greet")) {
             StringBuilder names = extractNamesFrom(httpRequest);
             return createHttpResponse(200, "Hi, " + names + "!");
         }

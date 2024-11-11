@@ -29,8 +29,8 @@ public class Uri {
         }
     }
 
-    public boolean hasPathEqualTo(Path path) {
-        return this.path.equals(path);
+    public boolean hasPathEqualTo(String path) {
+        return this.path.equals(new Path(path));
     }
 
     public QueryParameters queryParameters() {

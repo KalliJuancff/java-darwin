@@ -23,7 +23,7 @@ public class HttpRequest {
     }
 
     public boolean hasPathEqualTo(String path) {
-        return uri.hasPathEqualTo(new Path(path));
+        return uri.hasPathEqualTo(path);
     }
 
     public QueryParameters queryParameters() {

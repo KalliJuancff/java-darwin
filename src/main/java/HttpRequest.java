@@ -13,12 +13,12 @@ public class HttpRequest {
         return Path.from(this).equals(Path.of(path));
     }
 
-    public Parameters parameters() {
+    public QueryParameters queryParameters() {
         if (!hasQueryString()) {
-            return Parameters.empty();
+            return QueryParameters.empty();
         }
 
-        return Parameters.from(requestLine);
+        return QueryParameters.from(requestLine);
     }
 
     private boolean hasQueryString() {

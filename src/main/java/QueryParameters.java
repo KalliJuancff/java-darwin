@@ -2,15 +2,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class Parameters implements Iterable<QueryParameter> {
+public class QueryParameters implements Iterable<QueryParameter> {
     private final List<QueryParameter> queryParameters = new ArrayList<>();
 
-    public static Parameters empty() {
-        return new Parameters();
+    public static QueryParameters empty() {
+        return new QueryParameters();
     }
 
-    public static Parameters from(String request) {
-        Parameters result = new Parameters();
+    public static QueryParameters from(String request) {
+        QueryParameters result = new QueryParameters();
 
         // Example: request := 'GET /greet?x=1&y2=z=4 HTTP/1.1'
         String uri = request.split(" ")[1];

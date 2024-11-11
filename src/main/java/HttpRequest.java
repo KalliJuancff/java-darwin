@@ -1,12 +1,12 @@
 public class HttpRequest {
-    private final String request;
+    private final String requestLine;
 
-    public HttpRequest(String request) {
-        if (request == null) {
-            throw new IllegalArgumentException("Request cannot be null");
+    public HttpRequest(String requestLine) {
+        if (requestLine == null) {
+            throw new IllegalArgumentException("Request line cannot be null");
         }
 
-        this.request = request;
+        this.requestLine = requestLine;
     }
 
     public boolean hasPathTo(String path) {
@@ -18,15 +18,15 @@ public class HttpRequest {
             return Parameters.empty();
         }
 
-        return Parameters.from(request);
+        return Parameters.from(requestLine);
     }
 
     private boolean hasQueryString() {
-        return request.contains("?");
+        return requestLine.contains("?");
     }
 
     @Override
     public String toString() {
-        return request;
+        return requestLine;
     }
 }

@@ -22,21 +22,21 @@ public class DarwinShould {
                 .body(equalTo("Not Found"));
     }
 
-
     @Test
-    public void returns_a_HTTP_status_code_of_200_if_endpoint_exists() {
+    public void returns_a_HTTP_status_code_of_200_and_a_OK_message_if_endpoint_exists() {
         RestAssured.baseURI = "http://localhost:8080";
-        String existentPath = "/hello";
+        String existingPath = "/hello";
 
         Main.main(new String[]{});
 
         given()
                 .when()
-                .get(existentPath)
+                .get(existingPath)
                 .then()
                 .statusCode(200)
                 .body(equalTo("OK"));
     }
+
 
     @ParameterizedTest
     @CsvSource({
@@ -44,7 +44,7 @@ public class DarwinShould {
             "'Dio', 'Hi, Dio!'",
             "'Gud', 'Hi, Gud!'"
     })
-    public void retrieve_one_string_parameter(String name, String expectedBody) {
+    public void retrieve_a_single_string_parameter(String name, String expectedBody) {
         RestAssured.baseURI = "http://localhost:8080";
         String path = "/greet?name=" + name;
 

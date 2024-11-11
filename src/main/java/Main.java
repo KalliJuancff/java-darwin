@@ -37,7 +37,7 @@ public class Main {
     private static void responseToClient(Socket socket, HttpRequest httpRequest) throws IOException {
         HttpResponse httpResponse;
         if (httpRequest.hasPathTo("/hello")) {
-            httpResponse = createHttpResponse(200, new ResponseBody("OK"));
+            httpResponse = createHttpResponse(200, "OK");
         } else if (httpRequest.hasPathTo("/greet")) {
             StringBuilder names = new StringBuilder();
             for (Parameter parameter : httpRequest.parameters()) {
@@ -47,15 +47,15 @@ public class Main {
                 names.append(parameter.value());
             }
 
-            httpResponse = createHttpResponse(200, new ResponseBody("Hi, " + names + "!"));
+            httpResponse = createHttpResponse(200, "Hi, " + names + "!");
         } else {
-            httpResponse = createHttpResponse(404, new ResponseBody("Not Found"));
+            httpResponse = createHttpResponse(404, "Not Found");
         }
         writeHttpResponse(socket, httpResponse);
     }
 
-    private static HttpResponse createHttpResponse(int statusCode, ResponseBody responseBody) {
-        return new HttpResponse(statusCode, responseBody);
+    private static HttpResponse createHttpResponse(int statusCode, String responseMessage) {
+        return new HttpResponse(statusCode, new ResponseBody(responseMessage));
     }
 
     private static void writeHttpResponse(Socket socket, HttpResponse response) throws IOException {

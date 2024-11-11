@@ -13,10 +13,10 @@ public class Uri {
         if (hasQueryString()) {
             String[] uriParts = uri.split("\\?");
             String path = uriParts[0];
-            return Path.of(path);
+            return new Path(path);
         }
 
-        return Path.of(uri);
+        return new Path(uri);
     }
 
     public QueryParameters queryParameters() {

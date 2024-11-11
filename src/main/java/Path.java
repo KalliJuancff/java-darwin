@@ -3,11 +3,7 @@ import java.util.Objects;
 public class Path {
     private final String path;
 
-    public static Path of(String path) {
-        return new Path(path);
-    }
-
-    private Path(String path) {
+    public Path(String path) {
         if (path == null) {
             throw new IllegalArgumentException("Path cannot be null");
         }

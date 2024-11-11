@@ -3,12 +3,13 @@ import java.util.Objects;
 public class Path {
     private final String path;
 
-    public static Path from(HttpRequest httpRequest) {
-        var result = httpRequest.requestLine().split(" ")[1];
-        if (result.contains("?")) {
-            return new Path(result.split("\\?")[0]);
+    public static Path from(String requestLine) {
+        String[] requestLineParts = requestLine.split(" ");
+        var uri = requestLineParts[1];
+        if (uri.contains("?")) {
+            return new Path(uri.split("\\?")[0]);
         }
-        return new Path(result);
+        return new Path(uri);
     }
 
     public static Path of(String path) {

@@ -9,12 +9,8 @@ public class HttpRequest {
         this.requestLine = requestLine;
     }
 
-    public String requestLine() {
-        return requestLine;
-    }
-
     public boolean isPathEqualTo(String path) {
-        return Path.from(this).equals(Path.of(path));
+        return Path.from(requestLine).equals(Path.of(path));
     }
 
     public QueryParameters queryParameters() {

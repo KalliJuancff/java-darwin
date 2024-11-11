@@ -20,6 +20,7 @@ public class HttpResponse {
         appendLineWith("Content-Length:", String.valueOf(responseBody.length()));
         appendLineWith();
         appendLineWith(responseBody.toString());
+
         return result.toString();
     }
 

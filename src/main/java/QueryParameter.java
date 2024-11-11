@@ -6,6 +6,5 @@ public record QueryParameter(String key, String value) {
         if (value == null) {
             throw new IllegalArgumentException("Value cannot be null");
         }
-
     }
 }

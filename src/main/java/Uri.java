@@ -1,7 +1,7 @@
 public class Uri {
     private final String uri;
     private Path path;
-    private String queryString;
+    private QueryString queryString;
 
     public Uri(String uri) {
         if (uri == null) {
@@ -18,9 +18,10 @@ public class Uri {
 
         path = new Path(uriParts[0]);
 
-        queryString = "";
         if (uriParts.length > 1) {
-            queryString = uriParts[1];
+            queryString = new QueryString(uriParts[1]);
+        } else {
+            queryString = new QueryString("");
         }
     }
 
@@ -28,16 +29,12 @@ public class Uri {
         return this.path.equals(path);
     }
 
-    public String queryString() {
-        return queryString;
-    }
-
     public QueryParameters queryParameters() {
         if (!hasQueryString()) {
             return QueryParameters.empty();
         }
 
-        return QueryParameters.from(queryString());
+        return QueryParameters.from(queryString);
     }
 
     private boolean hasQueryString() {

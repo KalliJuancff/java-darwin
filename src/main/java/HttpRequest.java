@@ -15,7 +15,7 @@ public class HttpRequest {
     }
 
     public boolean isPathEqualTo(String path) {
-        return uri.path().equals(new Path(path));
+        return uri.hasPathEqualTo(new Path(path));
     }
 
     public QueryParameters queryParameters() {

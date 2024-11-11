@@ -24,8 +24,8 @@ public class Uri {
         }
     }
 
-    public Path path() {
-        return path;
+    public boolean hasPathEqualTo(Path path) {
+        return this.path.equals(path);
     }
 
     public String queryString() {

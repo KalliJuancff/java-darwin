@@ -23,9 +23,9 @@ public class Uri {
         path = new Path(uriParts[0]);
 
         if (uriParts.length > 1) {
-            queryString = new QueryString(uriParts[1]);
+            queryString = QueryString.from(uriParts[1]);
         } else {
-            queryString = new QueryString("");
+            queryString = QueryString.empty();
         }
     }
 

@@ -9,6 +9,16 @@ public class Uri {
         this.uri = uri;
     }
 
+    public Path path() {
+        if (!hasQueryString()) {
+            return Path.of(uri);
+        }
+
+        String[] uriParts = uri.split("\\?");
+        String path = uriParts[0];
+        return Path.of(path);
+    }
+
     public QueryParameters queryParameters() {
         if (!hasQueryString()) {
             return QueryParameters.empty();

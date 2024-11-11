@@ -3,15 +3,6 @@ import java.util.Objects;
 public class Path {
     private final String path;
 
-    public static Path from(String requestLine) {
-        String[] requestLineParts = requestLine.split(" ");
-        var uri = requestLineParts[1];
-        if (uri.contains("?")) {
-            return new Path(uri.split("\\?")[0]);
-        }
-        return new Path(uri);
-    }
-
     public static Path of(String path) {
         return new Path(path);
     }

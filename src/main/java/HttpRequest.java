@@ -14,7 +14,7 @@ public class HttpRequest {
     }
 
     public boolean isPathEqualTo(String path) {
-        return Path.from(requestLine).equals(Path.of(path));
+        return uri.path().equals(Path.of(path));
     }
 
     public QueryParameters queryParameters() {

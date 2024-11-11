@@ -11,17 +11,20 @@ public class QueryParameters implements Iterable<QueryParameter> {
 
     public static QueryParameters from(QueryString queryString) {
         QueryParameters result = new QueryParameters();
-
-        String[] parametersAndValues = queryString.toString().split("&");
-        for (String parameterAndValue : parametersAndValues) {
-            String[] parameter = parameterAndValue.split("=");
-            String key = parameter[0];
-            String value = parameter[1];
-
-            result.add(key, value);
-        }
+        populateQueryParameters(queryString, result);
 
         return result;
+    }
+
+    private static void populateQueryParameters(QueryString queryString, QueryParameters queryParameters) {
+        String[] paramsAndValues = queryString.toString().split("&");
+        for (String paramAndValue : paramsAndValues) {
+            String[] tokens = paramAndValue.split("=");
+            String key = tokens[0];
+            String value = tokens[1];
+
+            queryParameters.add(key, value);
+        }
     }
 
     private void add(String key, String value) {

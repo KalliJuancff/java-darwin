@@ -1,12 +1,12 @@
 public class QueryString {
     private final String queryString;
 
-    public static QueryString from(String queryString) {
-        return new QueryString(queryString);
-    }
-
     public static QueryString empty() {
         return new QueryString("");
+    }
+
+    public static QueryString from(String queryString) {
+        return new QueryString(queryString);
     }
 
     private QueryString(String queryString) {

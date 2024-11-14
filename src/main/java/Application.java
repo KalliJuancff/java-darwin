@@ -1,11 +1,11 @@
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.BiConsumer;
 
 public class Application {
+    private static final Routes routes = new Routes();
+
     public void run() {
         Runnable task = Application::listenHttpAndRespond;
         Thread thread = new Thread(task);
@@ -35,8 +35,6 @@ public class Application {
             ex.printStackTrace();
         }
     }
-
-    private static List<Route> routes = new ArrayList<>();
 
     private static void get(String path, BiConsumer<HttpRequest, HttpResponse> handler) {
         routes.add(new Route(path, handler));

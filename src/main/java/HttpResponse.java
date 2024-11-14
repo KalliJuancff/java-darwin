@@ -3,7 +3,23 @@ public class HttpResponse {
     private final ResponseBody responseBody;
     private StringBuilder result;
 
-    public HttpResponse(int statusCode, ResponseBody responseBody) {
+    public static HttpResponse ok() {
+        return ok("OK");
+    }
+
+    public static HttpResponse ok(String body) {
+        return new HttpResponse(200, new ResponseBody(body));
+    }
+
+    public static HttpResponse created() {
+        return new HttpResponse(201, new ResponseBody("Created"));
+    }
+
+    public static HttpResponse notFound() {
+        return new HttpResponse(404, new ResponseBody("Not Found"));
+    }
+
+    private HttpResponse(int statusCode, ResponseBody responseBody) {
         if (responseBody == null) {
             throw new IllegalArgumentException("Response body cannot be null");
         }

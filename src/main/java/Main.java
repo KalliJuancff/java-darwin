@@ -42,19 +42,15 @@ public class Main {
     private static HttpResponse createHttpResponse(HttpRequest httpRequest) {
         if (httpRequest.hasPathEqualTo("/hello")) {
             if (httpRequest.isPostMethod()) {
-                return createHttpResponse(201, "Created");
+                return HttpResponse.created();
             }
-            return createHttpResponse(200, "OK");
+            return HttpResponse.ok();
         }
         if (httpRequest.hasPathEqualTo("/greet")) {
             StringBuilder names = extractNamesFrom(httpRequest);
-            return createHttpResponse(200, "Hi, " + names + "!");
+            return HttpResponse.ok("Hi, " + names + "!");
         }
-        return createHttpResponse(404, "Not Found");
-    }
-
-    private static HttpResponse createHttpResponse(int statusCode, String responseMessage) {
-        return new HttpResponse(statusCode, new ResponseBody(responseMessage));
+        return HttpResponse.notFound();
     }
 
     private static StringBuilder extractNamesFrom(HttpRequest httpRequest) {

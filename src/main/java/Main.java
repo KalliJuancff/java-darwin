@@ -41,7 +41,7 @@ public class Main {
 
     private static HttpResponse createHttpResponse(HttpRequest httpRequest) {
         if (httpRequest.hasPathEqualTo("/hello")) {
-            if (httpRequest.httpMethod().equals("POST")) {
+            if (httpRequest.isPostMethod()) {
                 return createHttpResponse(201, "Created");
             }
             return createHttpResponse(200, "OK");

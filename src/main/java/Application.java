@@ -30,10 +30,10 @@ public class Application {
         }
     }
 
-    private static BiConsumer<HttpRequest, HttpResponse>[] handlers = new BiConsumer[1];
+    private static Route[] routes = new Route[1];
 
     private static void get(String path, BiConsumer<HttpRequest, HttpResponse> handler) {
-        handlers[0] = handler;
+        routes[0] = new Route(path, handler);
     }
 
     private static void handleClientRequest(ServerSocket serverSocket) throws IOException {
@@ -63,10 +63,10 @@ public class Application {
 //            return HttpResponse.ok();
 //        }
 
-        for (BiConsumer<HttpRequest, HttpResponse> handler : handlers) {
-            if (httpRequest.hasPathEqualTo("/hello")) {
+        for (Route route : routes) {
+            if (route.matches(httpRequest)) {
                 HttpResponse httpResponse = HttpResponse.notFound();
-                handler.accept(httpRequest, httpResponse);
+                route.handle(httpRequest, httpResponse);
                 return httpResponse;
             }
         }

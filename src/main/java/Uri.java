@@ -18,15 +18,15 @@ public class Uri {
     }
 
     private void initializeUriParts() {
-        String[] uriParts = uri.split("\\?");
-
-        path = new Path(uriParts[0]);
-
-        if (uriParts.length > 1) {
-            queryString = QueryString.from(uriParts[1]);
-        } else {
+        if (!uri.contains("?")) {
+            path = new Path(uri);
             queryString = QueryString.empty();
+            return;
         }
+
+        String[] uriParts = uri.split("\\?");
+        path = new Path(uriParts[0]);
+        queryString = QueryString.from(uriParts[1]);
     }
 
     public boolean hasPathEqualTo(String path) {

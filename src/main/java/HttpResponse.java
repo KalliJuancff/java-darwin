@@ -1,7 +1,6 @@
 public class HttpResponse {
     private final int statusCode;
     private final ResponseBody responseBody;
-    private StringBuilder result;
 
     public static HttpResponse ok() {
         return ok("OK");
@@ -30,28 +29,28 @@ public class HttpResponse {
 
     @Override
     public String toString() {
-        result = new StringBuilder();
-        appendLineWith("HTTP/1.1", String.valueOf(statusCode), responseBody.toString());
-        appendLineWith("Content-Type: text/plain");
-        appendLineWith("Content-Length:", String.valueOf(responseBody.length()));
-        appendLineWith();
-        appendLineWith(responseBody.toString());
+        StringBuilder result = new StringBuilder();
+        appendLineWith(result, "HTTP/1.1", String.valueOf(statusCode), responseBody.toString());
+        appendLineWith(result, "Content-Type: text/plain");
+        appendLineWith(result, "Content-Length:", String.valueOf(responseBody.length()));
+        appendLineWith(result);
+        appendLineWith(result, responseBody.toString());
 
         return result.toString();
     }
 
-    private void appendLineWith(String... subStrings) {
+    private void appendLineWith(StringBuilder builder, String... subStrings) {
         for (String subString : subStrings) {
-            result.append(subString)
+            builder.append(subString)
                     .append(" ");
         }
 
         // If there were sub-strings...
         if (subStrings.length > 0) {
             // ...remove last space
-            result.deleteCharAt(result.length() - 1);
+            builder.deleteCharAt(builder.length() - 1);
         }
 
-        result.append(System.lineSeparator());
+        builder.append(System.lineSeparator());
     }
 }

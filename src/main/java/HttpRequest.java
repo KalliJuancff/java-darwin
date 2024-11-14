@@ -22,6 +22,10 @@ public class HttpRequest {
         uri = Uri.from(requestLineParts[1]);
     }
 
+    public String httpMethod() {
+        return requestLine.split(" ")[0];
+    }
+
     public boolean hasPathEqualTo(String path) {
         return uri.hasPathEqualTo(path);
     }

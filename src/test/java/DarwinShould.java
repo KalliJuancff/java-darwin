@@ -14,7 +14,7 @@ public class DarwinShould {
     }
 
     @Test
-    public void returns_a_HTTP_status_code_of_404_and_a_Not_Found_message_if_endpoint_does_not_exist() {
+    public void responds_to_a_GET_method_with_a_HTTP_status_code_of_404_and_a_Not_Found_message_if_endpoint_does_not_exist() {
         String nonExistentPath = "/nonexistent-path";
 
         executeMain();
@@ -28,7 +28,7 @@ public class DarwinShould {
     }
 
     @Test
-    public void returns_a_HTTP_status_code_of_200_and_a_OK_message_if_endpoint_exists() {
+    public void responds_to_a_GET_method_with_a_HTTP_status_code_of_200_and_a_OK_message_if_endpoint_exists() {
         String existingPath = "/hello";
 
         executeMain();
@@ -80,6 +80,22 @@ public class DarwinShould {
                 .statusCode(200)
                 .body(equalTo(expectedBody));
     }
+
+
+    @Test
+    public void responds_to_a_POST_method_with_HTTP_status_code_of_201_and_a_Created_message() {
+        String existingPath = "/hello";
+
+        executeMain();
+
+        given()
+                .when()
+                .post(existingPath)
+                .then()
+                .statusCode(201)
+                .body(equalTo("Created"));
+    }
+
 
     private static void executeMain() {
         Main.main(new String[]{});

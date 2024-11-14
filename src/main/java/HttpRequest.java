@@ -2,7 +2,7 @@ public class HttpRequest {
     private final String requestLine;
     private Uri uri;
 
-    // Example: requestLine := 'GET /greet?x=1&y2=z=4 HTTP/1.1'
+    // Example: requestLine := 'GET /sum?x=1&y2=z=4 HTTP/1.1'
     public static HttpRequest from(String requestLine) {
         return new HttpRequest(requestLine);
     }

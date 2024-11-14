@@ -17,7 +17,7 @@ public class DarwinShould {
     public void responds_to_a_GET_method_with_a_HTTP_status_code_of_404_and_a_Not_Found_message_if_endpoint_does_not_exist() {
         String nonExistentPath = "/nonexistent-path";
 
-        executeMain();
+        runApplication();
 
         given()
                 .when()
@@ -31,7 +31,7 @@ public class DarwinShould {
     public void responds_to_a_GET_method_with_a_HTTP_status_code_of_200_and_a_OK_message_if_endpoint_exists() {
         String existingPath = "/hello";
 
-        executeMain();
+        runApplication();
 
         given()
                 .when()
@@ -51,7 +51,7 @@ public class DarwinShould {
     public void fetches_a_single_string_parameter(String name, String expectedBody) {
         String path = "/greet?name=" + name;
 
-        executeMain();
+        runApplication();
 
         given()
                 .when()
@@ -71,7 +71,7 @@ public class DarwinShould {
         String path = "/greet" + queryString;
         String expectedBody = "Hi, " + expectedNames + "!";
 
-        executeMain();
+        runApplication();
 
         given()
                 .when()
@@ -86,7 +86,7 @@ public class DarwinShould {
     public void responds_to_a_POST_method_with_HTTP_status_code_of_201_and_a_Created_message() {
         String existingPath = "/hello";
 
-        executeMain();
+        runApplication();
 
         given()
                 .when()
@@ -97,7 +97,7 @@ public class DarwinShould {
     }
 
 
-    private static void executeMain() {
-        Main.main(new String[]{});
+    private static void runApplication() {
+        new Application().run();
     }
 }

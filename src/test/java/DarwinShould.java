@@ -17,7 +17,7 @@ public class DarwinShould {
     public void returns_a_HTTP_status_code_of_404_and_a_Not_Found_message_if_endpoint_does_not_exist() {
         String nonExistentPath = "/nonexistent-path";
 
-        executeMainFunction();
+        executeMain();
 
         given()
                 .when()
@@ -31,7 +31,7 @@ public class DarwinShould {
     public void returns_a_HTTP_status_code_of_200_and_a_OK_message_if_endpoint_exists() {
         String existingPath = "/hello";
 
-        executeMainFunction();
+        executeMain();
 
         given()
                 .when()
@@ -48,10 +48,10 @@ public class DarwinShould {
             "'Dio', 'Hi, Dio!'",
             "'Gud', 'Hi, Gud!'"
     })
-    public void retrieve_a_single_string_parameter(String name, String expectedBody) {
+    public void fetches_a_single_string_parameter(String name, String expectedBody) {
         String path = "/greet?name=" + name;
 
-        executeMainFunction();
+        executeMain();
 
         given()
                 .when()
@@ -67,20 +67,21 @@ public class DarwinShould {
             "'?name=Darwin&name2=Dio&name3=Gud', 'Darwin and Dio and Gud'",
             "'?name=Darwin&name2=Dio&name3=Diu&name4=Gud&name5=Poe', 'Darwin and Dio and Diu and Gud and Poe'"
     })
-    public void retrieve_more_than_one_string_parameter(String queryString, String expectedNames) {
+    public void fetches_more_than_one_string_parameter(String queryString, String expectedNames) {
         String path = "/greet" + queryString;
+        String expectedBody = "Hi, " + expectedNames + "!";
 
-        executeMainFunction();
+        executeMain();
 
         given()
                 .when()
                 .get(path)
                 .then()
                 .statusCode(200)
-                .body(equalTo("Hi, " + expectedNames + "!"));
+                .body(equalTo(expectedBody));
     }
 
-    private static void executeMainFunction() {
+    private static void executeMain() {
         Main.main(new String[]{});
     }
 }

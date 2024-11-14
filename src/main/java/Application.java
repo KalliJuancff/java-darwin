@@ -1,6 +1,8 @@
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiConsumer;
 
 public class Application {
@@ -21,6 +23,10 @@ public class Application {
                     res.convertTo(HttpResponse.ok());
                 }
             });
+            get("/greet", (req, res) -> {
+                StringBuilder names = extractNamesFrom(req);
+                res.convertTo(HttpResponse.ok("Hi, " + names + "!"));
+            });
 
             while (true) {
                 handleClientRequest(serverSocket);
@@ -30,10 +36,10 @@ public class Application {
         }
     }
 
-    private static Route[] routes = new Route[1];
+    private static List<Route> routes = new ArrayList<>();
 
     private static void get(String path, BiConsumer<HttpRequest, HttpResponse> handler) {
-        routes[0] = new Route(path, handler);
+        routes.add(new Route(path, handler));
     }
 
     private static void handleClientRequest(ServerSocket serverSocket) throws IOException {
@@ -56,24 +62,12 @@ public class Application {
     }
 
     private static HttpResponse createHttpResponse(HttpRequest httpRequest) {
-//        if (httpRequest.hasPathEqualTo("/hello")) {
-//            if (httpRequest.isPostMethod()) {
-//                return HttpResponse.created();
-//            }
-//            return HttpResponse.ok();
-//        }
-
         for (Route route : routes) {
             if (route.matches(httpRequest)) {
-                HttpResponse httpResponse = HttpResponse.notFound();
+                HttpResponse httpResponse = HttpResponse.internalServerError();
                 route.handle(httpRequest, httpResponse);
                 return httpResponse;
             }
-        }
-
-        if (httpRequest.hasPathEqualTo("/greet")) {
-            StringBuilder names = extractNamesFrom(httpRequest);
-            return HttpResponse.ok("Hi, " + names + "!");
         }
         return HttpResponse.notFound();
     }

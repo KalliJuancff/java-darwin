@@ -18,6 +18,10 @@ public class HttpResponse {
         return new HttpResponse(404, new ResponseBody("Not Found"));
     }
 
+    public static HttpResponse internalServerError() {
+        return new HttpResponse(500, new ResponseBody("Internal Server Error"));
+    }
+
     private HttpResponse(int statusCode, ResponseBody responseBody) {
         if (responseBody == null) {
             throw new IllegalArgumentException("Response body cannot be null");

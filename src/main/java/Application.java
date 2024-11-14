@@ -4,7 +4,12 @@ import java.net.Socket;
 import java.util.function.BiConsumer;
 
 public class Application {
+    private final int port;
     private final Routes routes = new Routes();
+
+    public Application(int port) {
+        this.port = port;
+    }
 
     public void get(String path, BiConsumer<HttpRequest, HttpResponse> handler) {
         routes.add(new Route(path, handler));
@@ -17,8 +22,8 @@ public class Application {
     }
 
     private void listenHttpAndRespond() {
-        try (ServerSocket serverSocket = new ServerSocket(8080)) {
-            System.out.println("Server is listening on port 8080");
+        try (ServerSocket serverSocket = new ServerSocket(port)) {
+            System.out.println("Server is listening on port " + port);
 
             while (true) {
                 handleClientRequest(serverSocket);

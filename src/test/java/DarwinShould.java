@@ -4,13 +4,28 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import java.io.IOException;
+import java.net.ServerSocket;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
 public class DarwinShould {
+    private int port;
+
     @BeforeEach
     public void setUp() {
-        RestAssured.baseURI = "http://localhost:8080";
+        port = findAvailableTcpPort();
+        RestAssured.baseURI = "http://localhost:" + port;
+    }
+
+    private int findAvailableTcpPort() {
+        // https://www.baeldung.com/java-free-port
+        try (ServerSocket socket = new ServerSocket(0)) {
+            return socket.getLocalPort();
+        } catch (IOException e) {
+            throw new RuntimeException("Could not find available port", e);
+        }
     }
 
     @Test
@@ -96,8 +111,8 @@ public class DarwinShould {
                 .body(equalTo("Created"));
     }
 
-    private static void runApplication() {
-        var app = new Application();
+    private void runApplication() {
+        var app = new Application(port);
 
         app.get("/hello", (req, res) -> {
             if (req.isPostMethod()) {

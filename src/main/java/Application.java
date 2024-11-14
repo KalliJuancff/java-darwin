@@ -1,6 +1,7 @@
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.function.BiConsumer;
 
 public class Application {
     public void run() {
@@ -12,12 +13,27 @@ public class Application {
     private static void listenHttpAndRespond() {
         try (ServerSocket serverSocket = new ServerSocket(8080)) {
             System.out.println("Server is listening on port 8080");
+
+            get("/hello", (req, res) -> {
+                if (req.isPostMethod()) {
+                    res.convertTo(HttpResponse.created());
+                } else {
+                    res.convertTo(HttpResponse.ok());
+                }
+            });
+
             while (true) {
                 handleClientRequest(serverSocket);
             }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    private static BiConsumer<HttpRequest, HttpResponse>[] handlers = new BiConsumer[1];
+
+    private static void get(String path, BiConsumer<HttpRequest, HttpResponse> handler) {
+        handlers[0] = handler;
     }
 
     private static void handleClientRequest(ServerSocket serverSocket) throws IOException {
@@ -40,12 +56,21 @@ public class Application {
     }
 
     private static HttpResponse createHttpResponse(HttpRequest httpRequest) {
-        if (httpRequest.hasPathEqualTo("/hello")) {
-            if (httpRequest.isPostMethod()) {
-                return HttpResponse.created();
+//        if (httpRequest.hasPathEqualTo("/hello")) {
+//            if (httpRequest.isPostMethod()) {
+//                return HttpResponse.created();
+//            }
+//            return HttpResponse.ok();
+//        }
+
+        for (BiConsumer<HttpRequest, HttpResponse> handler : handlers) {
+            if (httpRequest.hasPathEqualTo("/hello")) {
+                HttpResponse httpResponse = HttpResponse.notFound();
+                handler.accept(httpRequest, httpResponse);
+                return httpResponse;
             }
-            return HttpResponse.ok();
         }
+
         if (httpRequest.hasPathEqualTo("/greet")) {
             StringBuilder names = extractNamesFrom(httpRequest);
             return HttpResponse.ok("Hi, " + names + "!");

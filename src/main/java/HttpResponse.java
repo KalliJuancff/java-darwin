@@ -1,6 +1,6 @@
 public class HttpResponse {
-    private final int statusCode;
-    private final ResponseBody responseBody;
+    private int statusCode;
+    private ResponseBody responseBody;
 
     public static HttpResponse ok() {
         return ok("OK");
@@ -25,6 +25,11 @@ public class HttpResponse {
 
         this.statusCode = statusCode;
         this.responseBody = responseBody;
+    }
+
+    public void convertTo(HttpResponse httpResponse) {
+        statusCode = httpResponse.statusCode;
+        responseBody = httpResponse.responseBody;
     }
 
     @Override

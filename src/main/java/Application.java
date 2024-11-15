@@ -5,14 +5,19 @@ import java.util.function.BiConsumer;
 
 public class Application {
     private final int port;
-    private final Routes routes = new Routes();
+    private final Routes getRoutes = new Routes();
+    private final Routes postRoutes = new Routes();
 
     public Application(int port) {
         this.port = port;
     }
 
     public void get(String path, BiConsumer<HttpRequest, HttpResponse> handler) {
-        routes.add(new Route(path, handler));
+        getRoutes.add(new Route(path, handler));
+    }
+
+    public void post(String path, BiConsumer<HttpRequest, HttpResponse> handler) {
+        postRoutes.add(new Route(path, handler));
     }
 
     public void run() {
@@ -53,11 +58,21 @@ public class Application {
     }
 
     private HttpResponse createHttpResponse(HttpRequest httpRequest) {
-        for (Route route : routes) {
-            if (route.matches(httpRequest)) {
-                HttpResponse httpResponse = HttpResponse.internalServerError();
-                route.handle(httpRequest, httpResponse);
-                return httpResponse;
+        if (!httpRequest.isPostMethod()) {
+            for (Route route : getRoutes) {
+                if (route.matches(httpRequest)) {
+                    HttpResponse httpResponse = HttpResponse.internalServerError();
+                    route.handle(httpRequest, httpResponse);
+                    return httpResponse;
+                }
+            }
+        } else {
+            for (Route route : postRoutes) {
+                if (route.matches(httpRequest)) {
+                    HttpResponse httpResponse = HttpResponse.internalServerError();
+                    route.handle(httpRequest, httpResponse);
+                    return httpResponse;
+                }
             }
         }
         return HttpResponse.notFound();

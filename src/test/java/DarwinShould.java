@@ -115,11 +115,10 @@ public class DarwinShould {
         var app = new Application(port);
 
         app.get("/hello", (req, res) -> {
-            if (req.isPostMethod()) {
-                res.convertTo(HttpResponse.created());
-            } else {
-                res.convertTo(HttpResponse.ok());
-            }
+            res.convertTo(HttpResponse.ok());
+        });
+        app.post("/hello", (req, res) -> {
+            res.convertTo(HttpResponse.created());
         });
         app.get("/greet", (req, res) -> {
             StringBuilder names = extractNamesFrom(req);

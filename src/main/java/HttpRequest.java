@@ -26,17 +26,13 @@ public class HttpRequest {
         uri = Uri.from(requestLineParts[1]);
     }
 
-    public Path path() {
-        return uri.path();
-    }
-
     public HttpMethod method() {
         return method;
     }
 
     public boolean isPathContainedIn(List<Path> paths) {
         for (Path path : paths) {
-            if (hasPathEqualTo(path.toString())) {
+            if (hasPathEqualTo(path)) {
                 return true;
             }
         }
@@ -44,10 +40,6 @@ public class HttpRequest {
     }
 
     public boolean hasPathEqualTo(Path path) {
-        return uri.hasPathEqualTo(path.toString());
-    }
-
-    public boolean hasPathEqualTo(String path) {
         return uri.hasPathEqualTo(path);
     }
 

@@ -1,7 +1,7 @@
 public class HttpRequest {
     private final String requestLine;
     private Uri uri;
-    private HttpMethods method;
+    private HttpMethod method;
 
     // Example: requestLine := 'GET /sum?x=1&y2=z=4 HTTP/1.1'
     public static HttpRequest from(String requestLine) {
@@ -20,11 +20,11 @@ public class HttpRequest {
 
     private void initializeHttpRequestParts(String requestLine) {
         String[] requestLineParts = requestLine.split(" ");
-        method = HttpMethods.from(requestLineParts[0]);
+        method = HttpMethod.from(requestLineParts[0]);
         uri = Uri.from(requestLineParts[1]);
     }
 
-    public HttpMethods method() {
+    public HttpMethod method() {
         return method;
     }
 

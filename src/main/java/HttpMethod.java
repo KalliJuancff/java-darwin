@@ -1,4 +1,4 @@
-public enum HttpMethods {
+public enum HttpMethod {
     // Used to request data from a server. It is a read-only method and should not alter data on the server
     GET("GET"),
     // Used to send data to the server, often to create a new resource. It can modify the state on the server
@@ -23,8 +23,8 @@ public enum HttpMethods {
 
     private final String method;
 
-    public static HttpMethods from(String method) {
-        for (HttpMethods httpMethod : HttpMethods.values()) {
+    public static HttpMethod from(String method) {
+        for (HttpMethod httpMethod : HttpMethod.values()) {
             if (httpMethod.method.equalsIgnoreCase(method)) {
                 return httpMethod;
             }
@@ -32,7 +32,7 @@ public enum HttpMethods {
         throw new IllegalArgumentException("Invalid HTTP method: " + method);
     }
 
-    private HttpMethods(String method) {
+    private HttpMethod(String method) {
         this.method = method;
     }
 

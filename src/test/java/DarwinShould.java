@@ -111,6 +111,21 @@ public class DarwinShould {
                 .body(equalTo("Created"));
     }
 
+    @Test
+    public void responds_to_a_POST_method_with_HTTP_status_code_of_405_and_a_Method_not_allowed_message_if_path_exists_but_HTTP_method_is_not_configured() {
+        String path = "/greet";
+
+        runApplication();
+
+        given()
+                .when()
+                .post(path)
+                .then()
+                .statusCode(405)
+                .body(equalTo("Method not allowed"));
+    }
+
+
     private void runApplication() {
         var app = new Application(port);
 

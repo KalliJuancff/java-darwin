@@ -18,6 +18,10 @@ public class HttpResponse {
         return new HttpResponse(404, new ResponseBody("Not Found"));
     }
 
+    public static HttpResponse methodNotAllowed() {
+        return new HttpResponse(405, new ResponseBody("Method not allowed"));
+    }
+
     public static HttpResponse internalServerError() {
         return new HttpResponse(500, new ResponseBody("Internal Server Error"));
     }

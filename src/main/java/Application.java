@@ -5,19 +5,18 @@ import java.util.function.BiConsumer;
 
 public class Application {
     private final int port;
-    private final Routes getRoutes = new Routes();
-    private final Routes postRoutes = new Routes();
+    private final RouteManager routeManager = new RouteManager();
 
     public Application(int port) {
         this.port = port;
     }
 
     public void get(String path, BiConsumer<HttpRequest, HttpResponse> handler) {
-        getRoutes.add(new Route(path, handler));
+        routeManager.addGetRoute(path, handler);
     }
 
     public void post(String path, BiConsumer<HttpRequest, HttpResponse> handler) {
-        postRoutes.add(new Route(path, handler));
+        routeManager.addPostRoute(path, handler);
     }
 
     public void run() {
@@ -62,27 +61,7 @@ public class Application {
     }
 
     private HttpResponse createHttpResponse(HttpRequest httpRequest) {
-        if (httpRequest.isDeleteMethod()) {
-            return HttpResponse.methodNotAllowed();
-        }
-        if (!httpRequest.isPostMethod()) {
-            for (Route route : getRoutes) {
-                if (route.matches(httpRequest)) {
-                    HttpResponse httpResponse = HttpResponse.internalServerError();
-                    route.handle(httpRequest, httpResponse);
-                    return httpResponse;
-                }
-            }
-        } else {
-            for (Route route : postRoutes) {
-                if (route.matches(httpRequest)) {
-                    HttpResponse httpResponse = HttpResponse.internalServerError();
-                    route.handle(httpRequest, httpResponse);
-                    return httpResponse;
-                }
-            }
-        }
-        return HttpResponse.notFound();
+        return routeManager.responseTo(httpRequest);
     }
 
     private static void writeHttpResponse(Socket socket, HttpResponse response) throws IOException {

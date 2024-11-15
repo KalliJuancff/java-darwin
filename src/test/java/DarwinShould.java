@@ -11,12 +11,14 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
 public class DarwinShould {
-    private int port;
+    private Application app;
 
     @BeforeEach
     public void setUp() {
-        port = findAvailableTcpPort();
+        int port = findAvailableTcpPort();
         RestAssured.baseURI = "http://localhost:" + port;
+
+        createAndInitializeApplication(port);
     }
 
     private int findAvailableTcpPort() {
@@ -27,6 +29,33 @@ public class DarwinShould {
             throw new RuntimeException("Could not find available port", e);
         }
     }
+
+    private void createAndInitializeApplication(int port) {
+        app = new Application(port);
+
+        app.get("/hello", (req, res) -> {
+            res.convertTo(HttpResponse.ok());
+        });
+        app.post("/hello", (req, res) -> {
+            res.convertTo(HttpResponse.created());
+        });
+        app.get("/greet", (req, res) -> {
+            StringBuilder names = extractNamesFrom(req);
+            res.convertTo(HttpResponse.ok("Hi, " + names + "!"));
+        });
+    }
+
+    private static StringBuilder extractNamesFrom(HttpRequest httpRequest) {
+        StringBuilder names = new StringBuilder();
+        for (QueryParameter queryParameter : httpRequest.queryParameters()) {
+            if (!names.toString().isEmpty()) {
+                names.append(" and ");
+            }
+            names.append(queryParameter.value());
+        }
+        return names;
+    }
+
 
     @Test
     public void responds_to_a_GET_method_with_a_HTTP_status_code_of_404_and_a_Not_Found_message_if_endpoint_does_not_exist() {
@@ -132,30 +161,6 @@ public class DarwinShould {
 
 
     private void runApplication() {
-        var app = new Application(port);
-
-        app.get("/hello", (req, res) -> {
-            res.convertTo(HttpResponse.ok());
-        });
-        app.post("/hello", (req, res) -> {
-            res.convertTo(HttpResponse.created());
-        });
-        app.get("/greet", (req, res) -> {
-            StringBuilder names = extractNamesFrom(req);
-            res.convertTo(HttpResponse.ok("Hi, " + names + "!"));
-        });
-
         app.run();
-    }
-
-    private static StringBuilder extractNamesFrom(HttpRequest httpRequest) {
-        StringBuilder names = new StringBuilder();
-        for (QueryParameter queryParameter : httpRequest.queryParameters()) {
-            if (!names.toString().isEmpty()) {
-                names.append(" and ");
-            }
-            names.append(queryParameter.value());
-        }
-        return names;
     }
 }

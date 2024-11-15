@@ -28,6 +28,10 @@ public class HttpRequest {
         return method.equals("POST");
     }
 
+    public boolean isDeleteMethod() {
+        return method.equals("DELETE");
+    }
+
     public boolean hasPathEqualTo(String path) {
         return uri.hasPathEqualTo(path);
     }

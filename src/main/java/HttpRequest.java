@@ -26,6 +26,10 @@ public class HttpRequest {
         uri = Uri.from(requestLineParts[1]);
     }
 
+    public Path path() {
+        return uri.path();
+    }
+
     public HttpMethod method() {
         return method;
     }
@@ -37,6 +41,10 @@ public class HttpRequest {
             }
         }
         return false;
+    }
+
+    public boolean hasPathEqualTo(Path path) {
+        return uri.hasPathEqualTo(path.toString());
     }
 
     public boolean hasPathEqualTo(String path) {

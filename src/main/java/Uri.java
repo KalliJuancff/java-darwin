@@ -29,6 +29,10 @@ public class Uri {
         queryString = QueryString.from(uriParts[1]);
     }
 
+    public Path path() {
+        return path;
+    }
+
     public boolean hasPathEqualTo(String path) {
         return this.path.equals(new Path(path));
     }

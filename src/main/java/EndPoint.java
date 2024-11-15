@@ -14,7 +14,15 @@ public class EndPoint {
         this.path = new Path(path);
     }
 
+    public HttpMethod method() {
+        return method;
+    }
+
     public Path path() {
         return path;
+    }
+
+    public boolean matches(HttpRequest httpRequest) {
+        return httpRequest.hasPathEqualTo(path) && httpRequest.method().equals(method);
     }
 }

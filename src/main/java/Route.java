@@ -19,4 +19,12 @@ public class Route {
     public Path path() {
         return endpoint.path();
     }
+
+    public boolean matches(HttpRequest httpRequest) {
+        return endpoint.matches(httpRequest);
+    }
+
+    public void handle(HttpRequest httpRequest, HttpResponse httpResponse) {
+        handler.accept(httpRequest, httpResponse);
+    }
 }

@@ -1,7 +1,8 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class Routes {
+public class Routes implements Iterable<Route> {
     private final List<Route> routes = new ArrayList<>();
 
     public void add(Route route) {
@@ -16,5 +17,10 @@ public class Routes {
         return routes.stream()
                 .map(Route::path)
                 .toList();
+    }
+
+    @Override
+    public Iterator<Route> iterator() {
+        return routes.iterator();
     }
 }

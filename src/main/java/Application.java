@@ -19,6 +19,10 @@ public class Application {
         routeManager.addPostRoute(path, handler);
     }
 
+    public void delete(String path, BiConsumer<HttpRequest, HttpResponse> handler) {
+        routeManager.addDeleteRoute(path, handler);
+    }
+
     public void run() {
         post("/greet", (req, res) -> {
             res.convertTo(HttpResponse.methodNotAllowed());

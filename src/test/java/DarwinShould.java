@@ -111,43 +111,20 @@ public class DarwinShould {
                 .body(equalTo("Created"));
     }
 
-    @Test
-    public void responds_to_a_POST_method_with_HTTP_status_code_of_405_and_a_Method_not_allowed_message_if_path_exists_but_HTTP_method_is_not_configured() {
-        String path = "/greet";
 
+    @ParameterizedTest
+    @CsvSource({
+            "'DELETE', '/hello'",
+            "'POST', '/greet'",
+            "'DELETE', '/greet'"
+    })
+    public void responds_with_a_HTTP_status_code_of_405_and_a_Method_not_allowed_message_if_path_exists_but_HTTP_method_is_not_configured(
+            String method, String path) {
         runApplication();
 
         given()
                 .when()
-                .post(path)
-                .then()
-                .statusCode(405)
-                .body(equalTo("Method not allowed"));
-    }
-
-    @Test
-    public void responds_to_a_DELETE_method_with_HTTP_status_code_of_405_and_a_Method_not_allowed_message_if_path_exists_but_HTTP_method_is_not_configured() {
-        String path = "/hello";
-
-        runApplication();
-
-        given()
-                .when()
-                .delete(path)
-                .then()
-                .statusCode(405)
-                .body(equalTo("Method not allowed"));
-    }
-
-    @Test
-    public void responds_to_a_DELETE_method_with_HTTP_status_code_of_405_and_a_Method_not_allowed_message_if_path_exists_but_HTTP_method_is_not_configured_v2() {
-        String path = "/greet";
-
-        runApplication();
-
-        given()
-                .when()
-                .delete(path)
+                .request(method, path)
                 .then()
                 .statusCode(405)
                 .body(equalTo("Method not allowed"));

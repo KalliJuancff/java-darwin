@@ -16,16 +16,17 @@ public class RouteManager {
         if (httpRequest.isDeleteMethod()) {
             return HttpResponse.methodNotAllowed();
         }
-        if (!httpRequest.isPostMethod()) {
-            for (Route route : getRoutes) {
+        if (httpRequest.isPostMethod()) {
+            for (Route route : postRoutes) {
                 if (route.matches(httpRequest)) {
                     HttpResponse httpResponse = HttpResponse.internalServerError();
                     route.handle(httpRequest, httpResponse);
                     return httpResponse;
                 }
             }
-        } else {
-            for (Route route : postRoutes) {
+        }
+        if (httpRequest.isGetMethod()) {
+            for (Route route : getRoutes) {
                 if (route.matches(httpRequest)) {
                     HttpResponse httpResponse = HttpResponse.internalServerError();
                     route.handle(httpRequest, httpResponse);

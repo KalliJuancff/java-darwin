@@ -24,6 +24,10 @@ public class HttpRequest {
         uri = Uri.from(requestLineParts[1]);
     }
 
+    public boolean isGetMethod() {
+        return method.equals("GET");
+    }
+
     public boolean isPostMethod() {
         return method.equals("POST");
     }

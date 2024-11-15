@@ -25,15 +25,15 @@ public class HttpRequest {
     }
 
     public boolean isGetMethod() {
-        return method.equals("GET");
+        return method.equals(HttpMethods.GET);
     }
 
     public boolean isPostMethod() {
-        return method.equals("POST");
+        return method.equals(HttpMethods.POST);
     }
 
     public boolean isDeleteMethod() {
-        return method.equals("DELETE");
+        return method.equals(HttpMethods.DELETE);
     }
 
     public boolean hasPathEqualTo(String path) {

@@ -1,52 +1,52 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 
 public class RouteManager {
-    private final Routes getRoutes = new Routes();
-    private final Routes postRoutes = new Routes();
-    private final Routes deleteRoutes = new Routes();
+    private final List<String> paths = new ArrayList<>();
+    private final Map<String, Routes> routes = Map.of(
+            HttpMethods.GET, new Routes(),
+            HttpMethods.POST, new Routes(),
+            HttpMethods.DELETE, new Routes()
+    );
 
     public void addGetRoute(String path, BiConsumer<HttpRequest, HttpResponse> handler) {
-        getRoutes.add(new Route(path, handler));
+        paths.add(path);
+        routes.get(HttpMethods.GET).add(new Route(path, handler));
     }
 
     public void addPostRoute(String path, BiConsumer<HttpRequest, HttpResponse> handler) {
-        postRoutes.add(new Route(path, handler));
+        paths.add(path);
+        routes.get(HttpMethods.POST).add(new Route(path, handler));
     }
 
-    public void addDeleteRoute(String path, BiConsumer<HttpRequest,HttpResponse> handler) {
-        deleteRoutes.add(new Route(path, handler));
+    public void addDeleteRoute(String path, BiConsumer<HttpRequest, HttpResponse> handler) {
+        paths.add(path);
+        routes.get(HttpMethods.DELETE).add(new Route(path, handler));
     }
 
     public HttpResponse responseTo(HttpRequest httpRequest) {
-        if (httpRequest.isDeleteMethod()) {
-            for (Route route : deleteRoutes) {
-                if (route.matches(httpRequest)) {
-                    HttpResponse httpResponse = HttpResponse.internalServerError();
-                    route.handle(httpRequest, httpResponse);
-                    return httpResponse;
-                }
+        boolean pathFound = false;
+        for (String path : paths) {
+            if (httpRequest.hasPathEqualTo(path)) {
+                pathFound = true;
             }
+        }
 
-            return HttpResponse.methodNotAllowed();
-        }
-        if (httpRequest.isPostMethod()) {
-            for (Route route : postRoutes) {
-                if (route.matches(httpRequest)) {
-                    HttpResponse httpResponse = HttpResponse.internalServerError();
-                    route.handle(httpRequest, httpResponse);
-                    return httpResponse;
+        if (pathFound) {
+            if (routes.containsKey(httpRequest.method())) {
+                for (Route route : routes.get(httpRequest.method())) {
+                    if (route.matches(httpRequest)) {
+                        HttpResponse httpResponse = HttpResponse.internalServerError();
+                        route.handle(httpRequest, httpResponse);
+                        return httpResponse;
+                    }
                 }
+                return HttpResponse.methodNotAllowed();
             }
         }
-        if (httpRequest.isGetMethod()) {
-            for (Route route : getRoutes) {
-                if (route.matches(httpRequest)) {
-                    HttpResponse httpResponse = HttpResponse.internalServerError();
-                    route.handle(httpRequest, httpResponse);
-                    return httpResponse;
-                }
-            }
-        }
+
         return HttpResponse.notFound();
     }
 }

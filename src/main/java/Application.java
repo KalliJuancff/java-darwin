@@ -24,10 +24,6 @@ public class Application {
     }
 
     public void run() {
-        post("/greet", (req, res) -> {
-            res.convertTo(HttpResponse.methodNotAllowed());
-        });
-
         Runnable task = this::listenHttpAndRespond;
         Thread thread = new Thread(task);
         thread.start();

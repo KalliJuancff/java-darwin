@@ -24,16 +24,8 @@ public class HttpRequest {
         uri = Uri.from(requestLineParts[1]);
     }
 
-    public boolean isGetMethod() {
-        return method.equals(HttpMethods.GET);
-    }
-
-    public boolean isPostMethod() {
-        return method.equals(HttpMethods.POST);
-    }
-
-    public boolean isDeleteMethod() {
-        return method.equals(HttpMethods.DELETE);
+    public String method() {
+        return method;
     }
 
     public boolean hasPathEqualTo(String path) {

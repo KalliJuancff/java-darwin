@@ -23,6 +23,15 @@ public enum HttpMethods {
 
     private final String method;
 
+    public static HttpMethods from(String method) {
+        for (HttpMethods httpMethod : HttpMethods.values()) {
+            if (httpMethod.method.equalsIgnoreCase(method)) {
+                return httpMethod;
+            }
+        }
+        throw new IllegalArgumentException("Invalid HTTP method: " + method);
+    }
+
     private HttpMethods(String method) {
         this.method = method;
     }

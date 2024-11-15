@@ -139,6 +139,20 @@ public class DarwinShould {
                 .body(equalTo("Method not allowed"));
     }
 
+    @Test
+    public void responds_to_a_DELETE_method_with_HTTP_status_code_of_405_and_a_Method_not_allowed_message_if_path_exists_but_HTTP_method_is_not_configured_v2() {
+        String path = "/greet";
+
+        runApplication();
+
+        given()
+                .when()
+                .delete(path)
+                .then()
+                .statusCode(405)
+                .body(equalTo("Method not allowed"));
+    }
+
 
     private void runApplication() {
         var app = new Application(port);

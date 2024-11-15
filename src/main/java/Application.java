@@ -62,7 +62,7 @@ public class Application {
     }
 
     private HttpResponse createHttpResponse(HttpRequest httpRequest) {
-        if (httpRequest.isDeleteMethod() && httpRequest.hasPathEqualTo("/hello")) {
+        if (httpRequest.isDeleteMethod()) {
             return HttpResponse.methodNotAllowed();
         }
         if (!httpRequest.isPostMethod()) {

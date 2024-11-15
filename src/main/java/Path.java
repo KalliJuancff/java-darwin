@@ -23,4 +23,9 @@ public class Path {
     public int hashCode() {
         return Objects.hashCode(path);
     }
+
+    @Override
+    public String toString() {
+        return path;
+    }
 }

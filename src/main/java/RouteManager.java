@@ -5,48 +5,60 @@ import java.util.function.BiConsumer;
 
 public class RouteManager {
     private final List<String> paths = new ArrayList<>();
-    private final Map<HttpMethod, Routes> routes = Map.of(
-            HttpMethod.GET, new Routes(),
-            HttpMethod.POST, new Routes(),
-            HttpMethod.DELETE, new Routes()
+    private final Map<HttpMethod, RoutesOld> routesOld = Map.of(
+            HttpMethod.GET, new RoutesOld(),
+            HttpMethod.POST, new RoutesOld(),
+            HttpMethod.DELETE, new RoutesOld()
     );
+    private final Routes routes = new Routes();
 
     public void addGetRoute(String path, BiConsumer<HttpRequest, HttpResponse> handler) {
         paths.add(path);
-        routes.get(HttpMethod.GET).add(new Route(path, handler));
+        routesOld.get(HttpMethod.GET).add(new RouteOld(path, handler));
+
+        var endpoint = new EndPoint(HttpMethod.GET, path);
+        var route = new Route(endpoint, handler);
+        routes.add(route);
     }
 
     public void addPostRoute(String path, BiConsumer<HttpRequest, HttpResponse> handler) {
         paths.add(path);
-        routes.get(HttpMethod.POST).add(new Route(path, handler));
+        routesOld.get(HttpMethod.POST).add(new RouteOld(path, handler));
+
+        var endpoint = new EndPoint(HttpMethod.POST, path);
+        var route = new Route(endpoint, handler);
+        routes.add(route);
     }
 
     public void addDeleteRoute(String path, BiConsumer<HttpRequest, HttpResponse> handler) {
         paths.add(path);
-        routes.get(HttpMethod.DELETE).add(new Route(path, handler));
+        routesOld.get(HttpMethod.DELETE).add(new RouteOld(path, handler));
+
+        var endpoint = new EndPoint(HttpMethod.POST, path);
+        var route = new Route(endpoint, handler);
+        routes.add(route);
     }
 
     public HttpResponse responseTo(HttpRequest httpRequest) {
-        boolean pathFound = false;
-        for (String path : paths) {
-            if (httpRequest.hasPathEqualTo(path)) {
-                pathFound = true;
-            }
+        if (!httpRequest.isPathContainedIn(routes.allPaths())) {
+            return HttpResponse.notFound();
         }
 
-        if (pathFound) {
-            if (routes.containsKey(httpRequest.method())) {
-                for (Route route : routes.get(httpRequest.method())) {
-                    if (route.matches(httpRequest)) {
-                        HttpResponse httpResponse = HttpResponse.internalServerError();
-                        route.handle(httpRequest, httpResponse);
-                        return httpResponse;
-                    }
+        return responseToOld(httpRequest);
+    }
+
+    public HttpResponse responseToOld(HttpRequest httpRequest) {
+        if (routesOld.containsKey(httpRequest.method())) {
+            for (RouteOld routeOld : routesOld.get(httpRequest.method())) {
+                if (routeOld.matches(httpRequest)) {
+                    HttpResponse httpResponse = HttpResponse.internalServerError();
+                    routeOld.handle(httpRequest, httpResponse);
+                    return httpResponse;
                 }
-                return HttpResponse.methodNotAllowed();
             }
+            return HttpResponse.methodNotAllowed();
         }
 
-        return HttpResponse.notFound();
+        return HttpResponse.internalServerError();
     }
 }

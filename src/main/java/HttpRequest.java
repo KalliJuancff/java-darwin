@@ -1,3 +1,5 @@
+import java.util.List;
+
 public class HttpRequest {
     private final String requestLine;
     private Uri uri;
@@ -26,6 +28,15 @@ public class HttpRequest {
 
     public HttpMethod method() {
         return method;
+    }
+
+    public boolean isPathContainedIn(List<Path> paths) {
+        for (Path path : paths) {
+            if (hasPathEqualTo(path.toString())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean hasPathEqualTo(String path) {

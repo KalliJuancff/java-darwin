@@ -31,13 +31,9 @@ public class HttpRequest {
     }
 
     public boolean isPathContainedIn(Routes routes) {
-        List<Path> paths = routes.allPaths();
-        for (Path path : paths) {
-            if (hasPathEqualTo(path)) {
-                return true;
-            }
-        }
-        return false;
+        return routes.allPaths()
+                .stream()
+                .anyMatch(this::hasPathEqualTo);
     }
 
     public boolean hasPathEqualTo(Path path) {

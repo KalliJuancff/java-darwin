@@ -32,7 +32,6 @@ public class RouteManager {
                 return httpResponse;
             }
         }
-
         return HttpResponse.methodNotAllowed();
     }
 }

@@ -2,7 +2,7 @@ public class EndPoint {
     private final HttpMethod method;
     private final Path path;
 
-    public EndPoint(HttpMethod method, String path) {
+    public EndPoint(HttpMethod method, Path path) {
         if (method == null) {
             throw new IllegalArgumentException("Method cannot be null");
         }
@@ -11,7 +11,7 @@ public class EndPoint {
         }
 
         this.method = method;
-        this.path = new Path(path);
+        this.path = path;
     }
 
     public Path path() {

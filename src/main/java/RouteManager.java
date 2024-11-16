@@ -16,7 +16,7 @@ public class RouteManager {
     }
 
     private static Route createRoute(HttpMethod method, String path, BiConsumer<HttpRequest, HttpResponse> handler) {
-        var endpoint = new EndPoint(method, path);
+        var endpoint = new EndPoint(method, new Path(path));
         return new Route(endpoint, handler);
     }
 

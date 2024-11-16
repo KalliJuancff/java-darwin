@@ -5,22 +5,22 @@ import java.util.function.BiConsumer;
 
 public class Application {
     private final int port;
-    private final RouteManager routeManager = new RouteManager();
+    private final RoutingHandler routingHandler = new RoutingHandler();
 
     public Application(int port) {
         this.port = port;
     }
 
     public void get(String path, BiConsumer<HttpRequest, HttpResponse> handler) {
-        routeManager.addGetRoute(path, handler);
+        routingHandler.addGetRoute(path, handler);
     }
 
     public void post(String path, BiConsumer<HttpRequest, HttpResponse> handler) {
-        routeManager.addPostRoute(path, handler);
+        routingHandler.addPostRoute(path, handler);
     }
 
     public void delete(String path, BiConsumer<HttpRequest, HttpResponse> handler) {
-        routeManager.addDeleteRoute(path, handler);
+        routingHandler.addDeleteRoute(path, handler);
     }
 
     public void run() {
@@ -61,7 +61,7 @@ public class Application {
     }
 
     private HttpResponse createHttpResponse(HttpRequest httpRequest) {
-        return routeManager.responseTo(httpRequest);
+        return routingHandler.responseTo(httpRequest);
     }
 
     private static void writeHttpResponse(Socket socket, HttpResponse response) throws IOException {

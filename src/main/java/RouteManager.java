@@ -21,7 +21,7 @@ public class RouteManager {
     }
 
     public HttpResponse responseTo(HttpRequest httpRequest) {
-        if (!httpRequest.isPathContainedIn(routes.allPaths())) {
+        if (!httpRequest.isPathContainedIn(routes)) {
             return HttpResponse.notFound();
         }
 

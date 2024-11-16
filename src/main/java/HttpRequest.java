@@ -30,7 +30,8 @@ public class HttpRequest {
         return method;
     }
 
-    public boolean isPathContainedIn(List<Path> paths) {
+    public boolean isPathContainedIn(Routes routes) {
+        List<Path> paths = routes.allPaths();
         for (Path path : paths) {
             if (hasPathEqualTo(path)) {
                 return true;

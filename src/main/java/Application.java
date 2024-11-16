@@ -4,12 +4,8 @@ import java.net.Socket;
 import java.util.function.BiConsumer;
 
 public class Application {
-    private final int port;
     private final RoutingHandler routingHandler = new RoutingHandler();
-
-    public Application(int port) {
-        this.port = port;
-    }
+    private int port;
 
     public void get(String path, BiConsumer<HttpRequest, HttpResponse> handler) {
         routingHandler.addGetRoute(path, handler);
@@ -23,7 +19,9 @@ public class Application {
         routingHandler.addDeleteRoute(path, handler);
     }
 
-    public void run() {
+    public void listen(int port) {
+        this.port = port;
+
         Runnable task = this::listenHttpAndRespond;
         Thread thread = new Thread(task);
         thread.start();

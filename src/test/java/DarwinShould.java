@@ -15,10 +15,7 @@ public class DarwinShould {
 
     @BeforeEach
     public void setUp() {
-        int port = findAvailableTcpPort();
-        RestAssured.baseURI = "http://localhost:" + port;
-
-        createAndInitializeApplication(port);
+        createAndInitializeApplication();
     }
 
     private int findAvailableTcpPort() {
@@ -30,8 +27,8 @@ public class DarwinShould {
         }
     }
 
-    private void createAndInitializeApplication(int port) {
-        app = new Application(port);
+    private void createAndInitializeApplication() {
+        app = new Application();
 
         app.get("/hello", (req, res) -> {
             res.convertTo(HttpResponse.ok());
@@ -178,6 +175,9 @@ public class DarwinShould {
 
 
     private void runApplication() {
-        app.run();
+        int port = findAvailableTcpPort();
+        RestAssured.baseURI = "http://localhost:" + port;
+
+        app.listen(port);
     }
 }

@@ -1,6 +1,6 @@
 public class Main {
     public static void main(String[] args) {
-        Application app = new Application(8080);
+        Application app = new Application();
 
         app.get("/hello", (req, res) -> {
             res.convertTo(HttpResponse.ok());
@@ -13,7 +13,7 @@ public class Main {
             res.convertTo(HttpResponse.ok("Hi, " + names + "!"));
         });
 
-        app.run();
+        app.listen(8080);
     }
 
     private static StringBuilder extractNamesFrom(HttpRequest httpRequest) {

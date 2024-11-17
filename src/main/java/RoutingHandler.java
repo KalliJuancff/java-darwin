@@ -30,8 +30,8 @@ public class RoutingHandler {
                 HttpResponse httpResponse = HttpResponse.internalServerError();
                 try {
                     route.handle(httpRequest, httpResponse);
-                } catch (Exception e) {
-                    return httpResponse;
+                } catch (Exception ex) {
+                    return HttpResponse.internalServerError(ex.getMessage());
                 }
                 return httpResponse;
             }

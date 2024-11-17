@@ -26,6 +26,10 @@ public class HttpResponse {
         return new HttpResponse(500, new ResponseBody("Internal Server Error"));
     }
 
+    public static HttpResponse internalServerError(String exceptionMessage) {
+        return new HttpResponse(500, new ResponseBody("Internal Server Error (exception message: '" + exceptionMessage + "')"));
+    }
+
     private HttpResponse(int statusCode, ResponseBody responseBody) {
         if (responseBody == null) {
             throw new IllegalArgumentException("Response body cannot be null");

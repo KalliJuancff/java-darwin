@@ -174,6 +174,24 @@ public class DarwinShould {
     }
 
 
+    @Test
+    public void respond_with_a_HTTP_status_code_of_500_and_a_Internal_Server_Error_message_if_user_callback_triggers_an_exception() {
+        String path = "/boom";
+        app.get(path, (req, res) -> {
+            throw new RuntimeException("Boom!");
+        });
+
+        runApplication();
+
+        given()
+                .when()
+                .get(path)
+                .then()
+                .statusCode(500)
+                .body(equalTo("Internal Server Error"));
+    }
+
+
     private void runApplication() {
         int port = findAvailableTcpPort();
         RestAssured.baseURI = "http://localhost:" + port;

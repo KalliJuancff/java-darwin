@@ -184,7 +184,6 @@ public class DarwinShould {
 
 
     @Test
-    @Disabled
     public void respond_with_a_HTTP_status_code_of_500_and_a_Internal_Server_Error_message_if_user_callback_triggers_an_exception() {
         final String ANY_ERROR_MESSAGE = "Any error message";
 
@@ -200,7 +199,8 @@ public class DarwinShould {
                 .get(path)
                 .then()
                 .statusCode(500)
-                .body(equalTo("Internal Server Error (exception message: '" + ANY_ERROR_MESSAGE + "')"));
+                .statusLine("HTTP/1.1 500 Internal Server Error")
+                .body(equalTo("Error: '" + ANY_ERROR_MESSAGE + "'"));
     }
 
 

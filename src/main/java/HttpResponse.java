@@ -1,6 +1,5 @@
 public class HttpResponse {
     private HttpStatus status;
-    private int statusCode;
     private ResponseBody responseBody;
 
     public static HttpResponse ok() {
@@ -8,7 +7,7 @@ public class HttpResponse {
     }
 
     public static HttpResponse ok(String body) {
-        return new HttpResponse(200, new ResponseBody(body));
+        return new HttpResponse(HttpStatus.OK, body);
     }
 
     public static HttpResponse created() {
@@ -24,49 +23,36 @@ public class HttpResponse {
     }
 
     public static HttpResponse internalServerError() {
-        return new HttpResponse(500, new ResponseBody("Internal Server Error"));
+        return new HttpResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error");
     }
 
     public static HttpResponse internalServerError(String exceptionMessage) {
-        return new HttpResponse(500, new ResponseBody("Internal Server Error (exception message: '" + exceptionMessage + "')"));
+        return new HttpResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Error: '" + exceptionMessage + "'");
     }
 
-    private HttpResponse(HttpStatus status) {
-        this.status = status;
+    private HttpResponse(HttpStatus httpStatus) {
+        this.status = httpStatus;
         this.responseBody = ResponseBody.empty();
     }
 
-    private HttpResponse(int statusCode, ResponseBody responseBody) {
-        if (responseBody == null) {
+    private HttpResponse(HttpStatus httpStatus, String body) {
+        if (body == null) {
             throw new IllegalArgumentException("Response body cannot be null");
         }
 
-        this.statusCode = statusCode;
-        this.responseBody = responseBody;
-        status = HttpStatus.OK;
+        this.status = httpStatus;
+        this.responseBody = new ResponseBody(body);
     }
 
     public void convertTo(HttpResponse httpResponse) {
-        statusCode = httpResponse.statusCode;
-        responseBody = httpResponse.responseBody;
         status = httpResponse.status;
+        responseBody = httpResponse.responseBody;
     }
 
     @Override
     public String toString() {
-        if (status == HttpStatus.OK || status == HttpStatus.CREATED || status == HttpStatus.NOT_FOUND || status == HttpStatus.METHOD_NOT_ALLOWED) {
-            StringBuilder result = new StringBuilder();
-            appendLineWith(result, "HTTP/1.1", String.valueOf(status.code()), status.reason());
-            appendLineWith(result, "Content-Type: text/plain");
-            appendLineWith(result, "Content-Length:", String.valueOf(responseBody.length()));
-            appendLineWith(result);
-            appendLineWith(result, responseBody.toString());
-
-            return result.toString();
-        }
-
         StringBuilder result = new StringBuilder();
-        appendLineWith(result, "HTTP/1.1", String.valueOf(statusCode), responseBody.toString());
+        appendLineWith(result, "HTTP/1.1", String.valueOf(status.code()), status.reason());
         appendLineWith(result, "Content-Type: text/plain");
         appendLineWith(result, "Content-Length:", String.valueOf(responseBody.length()));
         appendLineWith(result);

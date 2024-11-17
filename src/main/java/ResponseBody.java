@@ -5,8 +5,11 @@ public class ResponseBody {
         return new ResponseBody("");
     }
 
-    // TODO: change access modifier to private
-    public ResponseBody(String body) {
+    public static ResponseBody from(String body) {
+        return new ResponseBody(body);
+    }
+
+    private ResponseBody(String body) {
         if (body == null) {
             throw new IllegalArgumentException("Body cannot be null");
         }

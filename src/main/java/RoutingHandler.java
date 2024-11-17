@@ -27,7 +27,7 @@ public class RoutingHandler {
 
         for (Route route : routes) {
             if (route.matches(httpRequest)) {
-                HttpResponse httpResponse = HttpResponse.internalServerError();
+                HttpResponse httpResponse = HttpResponse.ok();
                 try {
                     route.handle(httpRequest, httpResponse);
                 } catch (Exception ex) {

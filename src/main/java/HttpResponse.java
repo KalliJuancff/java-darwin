@@ -22,26 +22,26 @@ public class HttpResponse {
         return new HttpResponse(HttpStatus.METHOD_NOT_ALLOWED);
     }
 
-    public static HttpResponse internalServerError() {
-        return new HttpResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error");
-    }
-
-    public static HttpResponse internalServerError(String exceptionMessage) {
-        return new HttpResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Error: '" + exceptionMessage + "'");
+    public static HttpResponse internalServerError(String errorMessage) {
+        return new HttpResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Error: '" + errorMessage + "'");
     }
 
     private HttpResponse(HttpStatus httpStatus) {
-        this.status = httpStatus;
-        this.responseBody = ResponseBody.empty();
+        this(httpStatus, ResponseBody.empty());
     }
 
     private HttpResponse(HttpStatus httpStatus, String body) {
-        if (body == null) {
+        this(httpStatus, ResponseBody.from(body));
+    }
+
+    private HttpResponse(HttpStatus httpStatus, ResponseBody responseBody) {
+        if (responseBody == null) {
             throw new IllegalArgumentException("Response body cannot be null");
         }
 
         this.status = httpStatus;
-        this.responseBody = new ResponseBody(body);
+        this.responseBody = responseBody;
+
     }
 
     public void convertTo(HttpResponse httpResponse) {

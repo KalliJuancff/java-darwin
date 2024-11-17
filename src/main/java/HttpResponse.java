@@ -1,4 +1,5 @@
 public class HttpResponse {
+    private final HttpStatus status;
     private int statusCode;
     private ResponseBody responseBody;
 
@@ -15,7 +16,7 @@ public class HttpResponse {
     }
 
     public static HttpResponse notFound() {
-        return new HttpResponse(404, new ResponseBody("Not Found"));
+        return new HttpResponse(HttpStatus.NOT_FOUND);
     }
 
     public static HttpResponse methodNotAllowed() {
@@ -30,6 +31,11 @@ public class HttpResponse {
         return new HttpResponse(500, new ResponseBody("Internal Server Error (exception message: '" + exceptionMessage + "')"));
     }
 
+    private HttpResponse(HttpStatus status) {
+        this.status = status;
+        this.responseBody = ResponseBody.empty();
+    }
+
     private HttpResponse(int statusCode, ResponseBody responseBody) {
         if (responseBody == null) {
             throw new IllegalArgumentException("Response body cannot be null");
@@ -37,6 +43,7 @@ public class HttpResponse {
 
         this.statusCode = statusCode;
         this.responseBody = responseBody;
+        status = HttpStatus.OK;
     }
 
     public void convertTo(HttpResponse httpResponse) {
@@ -46,6 +53,17 @@ public class HttpResponse {
 
     @Override
     public String toString() {
+        if (status == HttpStatus.NOT_FOUND) {
+            StringBuilder result = new StringBuilder();
+            appendLineWith(result, "HTTP/1.1", String.valueOf(status.code()), status.reason());
+            appendLineWith(result, "Content-Type: text/plain");
+            appendLineWith(result, "Content-Length:", String.valueOf(responseBody.length()));
+            appendLineWith(result);
+            appendLineWith(result, responseBody.toString());
+
+            return result.toString();
+        }
+
         StringBuilder result = new StringBuilder();
         appendLineWith(result, "HTTP/1.1", String.valueOf(statusCode), responseBody.toString());
         appendLineWith(result, "Content-Type: text/plain");

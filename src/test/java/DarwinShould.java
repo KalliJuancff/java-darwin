@@ -9,6 +9,7 @@ import java.net.ServerSocket;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.text.IsEmptyString.emptyOrNullString;
 
 public class DarwinShould {
     private Application app;
@@ -65,7 +66,8 @@ public class DarwinShould {
                 .get(nonExistentPath)
                 .then()
                 .statusCode(404)
-                .body(equalTo("Not Found"));
+                .statusLine("HTTP/1.1 404 Not Found")
+                .body(emptyOrNullString());
     }
 
     @Test

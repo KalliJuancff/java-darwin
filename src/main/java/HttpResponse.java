@@ -4,7 +4,7 @@ public class HttpResponse {
     private ResponseBody responseBody;
 
     public static HttpResponse ok() {
-        return ok("OK");
+        return new HttpResponse(HttpStatus.OK);
     }
 
     public static HttpResponse ok(String body) {
@@ -54,7 +54,7 @@ public class HttpResponse {
 
     @Override
     public String toString() {
-        if (status == HttpStatus.CREATED || status == HttpStatus.NOT_FOUND || status == HttpStatus.METHOD_NOT_ALLOWED) {
+        if (status == HttpStatus.OK || status == HttpStatus.CREATED || status == HttpStatus.NOT_FOUND || status == HttpStatus.METHOD_NOT_ALLOWED) {
             StringBuilder result = new StringBuilder();
             appendLineWith(result, "HTTP/1.1", String.valueOf(status.code()), status.reason());
             appendLineWith(result, "Content-Type: text/plain");

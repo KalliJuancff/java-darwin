@@ -1,6 +1,5 @@
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -60,7 +59,7 @@ public class DarwinShould {
     public void responds_to_a_GET_method_with_a_HTTP_status_code_of_404_and_a_Not_Found_message_if_endpoint_does_not_exist() {
         String nonExistentPath = "/nonexistent-path";
 
-        runApplication();
+        listen();
 
         given()
                 .when()
@@ -75,7 +74,7 @@ public class DarwinShould {
     public void responds_to_a_GET_method_with_a_HTTP_status_code_of_200_and_a_OK_message_if_endpoint_exists() {
         String existingPath = "/hello";
 
-        runApplication();
+        listen();
 
         given()
                 .when()
@@ -96,7 +95,7 @@ public class DarwinShould {
     public void fetches_a_single_string_parameter(String name, String expectedBody) {
         String path = "/greet?name=" + name;
 
-        runApplication();
+        listen();
 
         given()
                 .when()
@@ -117,7 +116,7 @@ public class DarwinShould {
         String path = "/greet" + queryString;
         String expectedBody = "Hi, " + expectedNames + "!";
 
-        runApplication();
+        listen();
 
         given()
                 .when()
@@ -133,7 +132,7 @@ public class DarwinShould {
     public void responds_to_a_POST_method_with_HTTP_status_code_of_201_and_a_Created_message() {
         String existingPath = "/hello";
 
-        runApplication();
+        listen();
 
         given()
                 .when()
@@ -153,7 +152,7 @@ public class DarwinShould {
     })
     public void responds_with_a_HTTP_status_code_of_405_and_a_Method_not_allowed_message_if_path_exists_but_HTTP_method_is_not_configured(
             String method, String path) {
-        runApplication();
+        listen();
 
         given()
                 .when()
@@ -171,7 +170,7 @@ public class DarwinShould {
             res.convertTo(HttpResponse.ok());
         });
 
-        runApplication();
+        listen();
 
         given()
                 .when()
@@ -192,7 +191,7 @@ public class DarwinShould {
             throw new RuntimeException(ANY_ERROR_MESSAGE);
         });
 
-        runApplication();
+        listen();
 
         given()
                 .when()
@@ -204,7 +203,7 @@ public class DarwinShould {
     }
 
 
-    private void runApplication() {
+    private void listen() {
         int port = findAvailableTcpPort();
         RestAssured.baseURI = "http://localhost:" + port;
 

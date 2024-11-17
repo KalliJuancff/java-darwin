@@ -12,6 +12,9 @@ public class Main {
             StringBuilder names = extractNamesFrom(req);
             res.convertTo(HttpResponse.ok("Hi, " + names + "!"));
         });
+        app.get("/boom", (req, res) -> {
+            throw new RuntimeException("Boom! (simulated internal error)");
+        });
 
         app.listen(8080);
     }

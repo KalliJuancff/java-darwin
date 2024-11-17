@@ -22,7 +22,7 @@ public class QueryString {
             return QueryParameters.empty();
         }
 
-        return QueryParameters.from(queryString);
+        return QueryParameters.parse(queryString);
     }
 
     @Override

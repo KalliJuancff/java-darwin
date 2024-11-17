@@ -3,7 +3,7 @@ public class Uri {
     private Path path;
     private QueryString queryString;
 
-    public static Uri from(String uri) {
+    public static Uri parse(String uri) {
         return new Uri(uri);
     }
 

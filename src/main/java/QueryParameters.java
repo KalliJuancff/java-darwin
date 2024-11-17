@@ -9,7 +9,7 @@ public class QueryParameters implements Iterable<QueryParameter> {
         return new QueryParameters();
     }
 
-    public static QueryParameters from(String queryString) {
+    public static QueryParameters parse(String queryString) {
         QueryParameters result = new QueryParameters();
         populateQueryParameters(queryString, result);
 

@@ -1,5 +1,3 @@
-import java.util.List;
-
 public class HttpRequest {
     private final String requestLine;
     private Uri uri;
@@ -23,7 +21,7 @@ public class HttpRequest {
     private void initializeHttpRequestParts(String requestLine) {
         String[] requestLineParts = requestLine.split(" ");
         method = HttpMethod.from(requestLineParts[0]);
-        uri = Uri.from(requestLineParts[1]);
+        uri = Uri.parse(requestLineParts[1]);
     }
 
     public HttpMethod method() {

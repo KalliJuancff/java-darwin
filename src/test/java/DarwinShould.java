@@ -136,7 +136,8 @@ public class DarwinShould {
                 .post(existingPath)
                 .then()
                 .statusCode(201)
-                .body(equalTo("Created"));
+                .statusLine("HTTP/1.1 201 Created")
+                .body(emptyOrNullString());
     }
 
 

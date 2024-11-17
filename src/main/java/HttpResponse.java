@@ -1,5 +1,5 @@
 public class HttpResponse {
-    private final HttpStatus status;
+    private HttpStatus status;
     private int statusCode;
     private ResponseBody responseBody;
 
@@ -12,7 +12,7 @@ public class HttpResponse {
     }
 
     public static HttpResponse created() {
-        return new HttpResponse(201, new ResponseBody("Created"));
+        return new HttpResponse(HttpStatus.CREATED);
     }
 
     public static HttpResponse notFound() {
@@ -49,11 +49,12 @@ public class HttpResponse {
     public void convertTo(HttpResponse httpResponse) {
         statusCode = httpResponse.statusCode;
         responseBody = httpResponse.responseBody;
+        status = httpResponse.status;
     }
 
     @Override
     public String toString() {
-        if (status == HttpStatus.NOT_FOUND) {
+        if (status == HttpStatus.CREATED || status == HttpStatus.NOT_FOUND) {
             StringBuilder result = new StringBuilder();
             appendLineWith(result, "HTTP/1.1", String.valueOf(status.code()), status.reason());
             appendLineWith(result, "Content-Type: text/plain");

@@ -156,7 +156,8 @@ public class DarwinShould {
                 .request(method, path)
                 .then()
                 .statusCode(405)
-                .body(equalTo("Method not allowed"));
+                .statusLine("HTTP/1.1 405 Method Not Allowed")
+                .body(emptyOrNullString());
     }
 
     @Test

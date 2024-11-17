@@ -20,7 +20,7 @@ public class HttpResponse {
     }
 
     public static HttpResponse methodNotAllowed() {
-        return new HttpResponse(405, new ResponseBody("Method not allowed"));
+        return new HttpResponse(HttpStatus.METHOD_NOT_ALLOWED);
     }
 
     public static HttpResponse internalServerError() {
@@ -54,7 +54,7 @@ public class HttpResponse {
 
     @Override
     public String toString() {
-        if (status == HttpStatus.CREATED || status == HttpStatus.NOT_FOUND) {
+        if (status == HttpStatus.CREATED || status == HttpStatus.NOT_FOUND || status == HttpStatus.METHOD_NOT_ALLOWED) {
             StringBuilder result = new StringBuilder();
             appendLineWith(result, "HTTP/1.1", String.valueOf(status.code()), status.reason());
             appendLineWith(result, "Content-Type: text/plain");

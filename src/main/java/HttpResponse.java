@@ -1,5 +1,5 @@
 public class HttpResponse {
-    private HttpStatus status;
+    private HttpStatus httpStatus;
     private ResponseBody responseBody;
 
     public static HttpResponse ok() {
@@ -39,20 +39,24 @@ public class HttpResponse {
             throw new IllegalArgumentException("Response body cannot be null");
         }
 
-        this.status = httpStatus;
+        this.httpStatus = httpStatus;
         this.responseBody = responseBody;
 
     }
 
+    public int statusCode() {
+        return httpStatus.code();
+    }
+
     public void convertTo(HttpResponse httpResponse) {
-        status = httpResponse.status;
+        httpStatus = httpResponse.httpStatus;
         responseBody = httpResponse.responseBody;
     }
 
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
-        appendLineWith(result, "HTTP/1.1", String.valueOf(status.code()), status.reason());
+        appendLineWith(result, "HTTP/1.1", String.valueOf(httpStatus.code()), httpStatus.reason());
         appendLineWith(result, "Content-Type: text/plain");
         appendLineWith(result, "Content-Length:", String.valueOf(responseBody.length()));
         appendLineWith(result);

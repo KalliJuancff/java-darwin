@@ -193,20 +193,16 @@ public class DarwinShould {
 
     @Test
     public void fetches_a_single_route_parameter() {
-        final int ANY_USER_ID = 7;
-        final String BASE_PATH = "/users";
-        final String USER_ID_PARAM = "userId";
-        String path = BASE_PATH + "/{ " + USER_ID_PARAM + " }";
-        String expectedBody = "{ \"" + USER_ID_PARAM + "\": \"" + ANY_USER_ID + "\" }";
-        app.get(path, (req, res) -> {
+        app.get("/users/{userId}", (req, res) -> {
             res.convertTo(HttpResponse.ok(req.pathParameter()));
         });
+        String expectedBody = "{ \"userId\": \"7\" }";
 
         listen();
 
         given()
                 .when()
-                .get(BASE_PATH + "/" + ANY_USER_ID)
+                .get("/users/7")
                 .then()
                 .statusCode(200)
                 .statusLine("HTTP/1.1 200 OK")

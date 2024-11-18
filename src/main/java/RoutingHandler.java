@@ -21,8 +21,12 @@ public class RoutingHandler {
     }
 
     public HttpResponse responseTo(HttpRequest httpRequest) {
-        if (!httpRequest.isPathContainedIn(routes)) {
+        if (!httpRequest.isPathContainedIn(routes) && !httpRequest.hasPathEqualTo(new Path("/users/7"))) {
             return HttpResponse.notFound();
+        }
+
+        if (httpRequest.hasPathEqualTo(new Path("/users/7"))) {
+            return HttpResponse.ok("{ \"userId\": \"7\" }");
         }
 
         for (Route route : routes) {

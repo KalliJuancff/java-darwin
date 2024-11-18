@@ -142,6 +142,7 @@ public class DarwinShould {
             String names = extractNamesFrom(req);
             res.convertTo(HttpResponse.ok("Hi, " + names + "!"));
         });
+
         listen();
 
         given()
@@ -173,7 +174,6 @@ public class DarwinShould {
     @Test
     public void respond_with_a_HTTP_status_code_of_500_and_a_Internal_Server_Error_if_user_callback_throws_an_exception() {
         String ANY_ERROR_MESSAGE = "Any error message";
-
         String path = "/boom";
         app.get(path, (req, res) -> {
             throw new RuntimeException(ANY_ERROR_MESSAGE);
@@ -188,6 +188,29 @@ public class DarwinShould {
                 .statusCode(500)
                 .statusLine("HTTP/1.1 500 Internal Server Error")
                 .body(equalTo("Error: '" + ANY_ERROR_MESSAGE + "'"));
+    }
+
+
+    @Test
+    public void fetches_a_single_route_parameter() {
+        final int ANY_USER_ID = 7;
+        final String BASE_PATH = "/users";
+        final String USER_ID_PARAM = "userId";
+        String path = BASE_PATH + "/{ " + USER_ID_PARAM + " }";
+        String expectedBody = "{ \"" + USER_ID_PARAM + "\": \"" + ANY_USER_ID + "\" }";
+        app.get(path, (req, res) -> {
+            res.convertTo(HttpResponse.ok(req.pathParameter()));
+        });
+
+        listen();
+
+        given()
+                .when()
+                .get(BASE_PATH + "/" + ANY_USER_ID)
+                .then()
+                .statusCode(200)
+                .statusLine("HTTP/1.1 200 OK")
+                .body(equalTo(expectedBody));
     }
 
 

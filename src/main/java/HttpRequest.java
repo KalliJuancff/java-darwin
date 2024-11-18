@@ -42,6 +42,10 @@ public class HttpRequest {
         return uri.queryParameters();
     }
 
+    public String pathParameter() {
+        return "";
+    }
+
     @Override
     public String toString() {
         return requestLine;

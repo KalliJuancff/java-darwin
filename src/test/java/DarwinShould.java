@@ -41,7 +41,7 @@ public class DarwinShould {
 
     @Test
     public void responds_with_a_HTTP_status_code_of_200_and_a_OK_if_endpoint_exists() {
-        String existingPath = HELLO_PATH;
+        String existingPath = "/";
         app.get(existingPath, (req, res) -> {
             res.convertTo(HttpResponse.ok());
         });
@@ -65,8 +65,8 @@ public class DarwinShould {
             "'Gud', 'Hi, Gud!'"
     })
     public void fetches_a_single_string_parameter(String name, String expectedBody) {
-        String uri = GREET_PATH + "?name=" + name;
-        app.get(GREET_PATH, (req, res) -> {
+        String uri = "/greet" + "?name=" + name;
+        app.get("/greet", (req, res) -> {
             String names = extractNamesFrom(req);
             res.convertTo(HttpResponse.ok("Hi, " + names + "!"));
         });
@@ -89,9 +89,9 @@ public class DarwinShould {
             "'?name=Darwin&name2=Dio&name3=Diu&name4=Gud&name5=Poe', 'Darwin and Dio and Diu and Gud and Poe'"
     })
     public void fetches_more_than_one_string_parameter(String queryString, String expectedNames) {
-        String uri = GREET_PATH + queryString;
+        String uri = "/greet" + queryString;
         String expectedBody = "Hi, " + expectedNames + "!";
-        app.get(GREET_PATH, (req, res) -> {
+        app.get("/greet", (req, res) -> {
             String names = extractNamesFrom(req);
             res.convertTo(HttpResponse.ok("Hi, " + names + "!"));
         });
@@ -110,7 +110,7 @@ public class DarwinShould {
 
     @Test
     public void responds_to_a_POST_method_with_a_HTTP_status_code_of_201_and_a_Created() {
-        String path = HELLO_PATH;
+        String path = "/";
         app.post(path, (req, res) -> {
             res.convertTo(HttpResponse.created());
         });
@@ -156,7 +156,7 @@ public class DarwinShould {
 
     @Test
     public void does_not_respond_with_a_HTTP_status_code_of_405_and_a_Method_not_allowed_message_if_path_exists_and_HTTP_method_is_configured() {
-        String path = GREET_PATH;
+        String path = "/";
         app.delete(path, (req, res) -> {
             res.convertTo(HttpResponse.ok());
         });

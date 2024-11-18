@@ -1,4 +1,5 @@
 import io.restassured.RestAssured;
+import org.hamcrest.core.IsNot;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,37 +13,14 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.text.IsEmptyString.emptyOrNullString;
 
 public class DarwinShould {
+    public static final String HELLO_PATH = "/hello";
+    public static final String GREET_PATH = "/greet";
+
     private Application app;
 
     @BeforeEach
     public void setUp() {
-        createAndInitializeApplication();
-    }
-
-    private void createAndInitializeApplication() {
         app = new Application();
-
-        app.get("/hello", (req, res) -> {
-            res.convertTo(HttpResponse.ok());
-        });
-        app.post("/hello", (req, res) -> {
-            res.convertTo(HttpResponse.created());
-        });
-        app.get("/greet", (req, res) -> {
-            String names = extractNamesFrom(req);
-            res.convertTo(HttpResponse.ok("Hi, " + names + "!"));
-        });
-    }
-
-    private static String extractNamesFrom(HttpRequest httpRequest) {
-        var names = new StringBuilder();
-        for (QueryParameter queryParameter : httpRequest.queryParameters()) {
-            if (!names.toString().isEmpty()) {
-                names.append(" and ");
-            }
-            names.append(queryParameter.value());
-        }
-        return names.toString();
     }
 
 
@@ -63,7 +41,10 @@ public class DarwinShould {
 
     @Test
     public void responds_with_a_HTTP_status_code_of_200_and_a_OK_if_endpoint_exists() {
-        String existingPath = "/hello";
+        String existingPath = HELLO_PATH;
+        app.get(existingPath, (req, res) -> {
+            res.convertTo(HttpResponse.ok());
+        });
 
         listen();
 
@@ -84,7 +65,11 @@ public class DarwinShould {
             "'Gud', 'Hi, Gud!'"
     })
     public void fetches_a_single_string_parameter(String name, String expectedBody) {
-        String uri = "/greet?name=" + name;
+        String uri = GREET_PATH + "?name=" + name;
+        app.get(GREET_PATH, (req, res) -> {
+            String names = extractNamesFrom(req);
+            res.convertTo(HttpResponse.ok("Hi, " + names + "!"));
+        });
 
         listen();
 
@@ -104,8 +89,12 @@ public class DarwinShould {
             "'?name=Darwin&name2=Dio&name3=Diu&name4=Gud&name5=Poe', 'Darwin and Dio and Diu and Gud and Poe'"
     })
     public void fetches_more_than_one_string_parameter(String queryString, String expectedNames) {
-        String uri = "/greet" + queryString;
+        String uri = GREET_PATH + queryString;
         String expectedBody = "Hi, " + expectedNames + "!";
+        app.get(GREET_PATH, (req, res) -> {
+            String names = extractNamesFrom(req);
+            res.convertTo(HttpResponse.ok("Hi, " + names + "!"));
+        });
 
         listen();
 
@@ -121,13 +110,16 @@ public class DarwinShould {
 
     @Test
     public void responds_to_a_POST_method_with_a_HTTP_status_code_of_201_and_a_Created() {
-        String existingPath = "/hello";
+        String path = HELLO_PATH;
+        app.post(path, (req, res) -> {
+            res.convertTo(HttpResponse.created());
+        });
 
         listen();
 
         given()
                 .when()
-                .post(existingPath)
+                .post(path)
                 .then()
                 .statusCode(201)
                 .statusLine("HTTP/1.1 201 Created")
@@ -137,12 +129,19 @@ public class DarwinShould {
 
     @ParameterizedTest
     @CsvSource({
-            "'DELETE', '/hello'",
-            "'POST', '/greet'",
-            "'DELETE', '/greet'"
+            "'DELETE', " + HELLO_PATH,
+            "'POST', " + GREET_PATH,
+            "'DELETE', " + GREET_PATH
     })
     public void responds_with_a_HTTP_status_code_of_405_and_a_Method_not_allowed_if_path_exists_but_HTTP_method_is_not_configured(
             String method, String path) {
+        app.get(HELLO_PATH, (req, res) -> {
+            res.convertTo(HttpResponse.ok());
+        });
+        app.get(GREET_PATH, (req, res) -> {
+            String names = extractNamesFrom(req);
+            res.convertTo(HttpResponse.ok("Hi, " + names + "!"));
+        });
         listen();
 
         given()
@@ -156,7 +155,7 @@ public class DarwinShould {
 
     @Test
     public void does_not_respond_with_a_HTTP_status_code_of_405_and_a_Method_not_allowed_message_if_path_exists_and_HTTP_method_is_configured() {
-        String path = "/greet";
+        String path = GREET_PATH;
         app.delete(path, (req, res) -> {
             res.convertTo(HttpResponse.ok());
         });
@@ -167,13 +166,13 @@ public class DarwinShould {
                 .when()
                 .delete(path)
                 .then()
-                .statusCode(200));
+                .statusCode(IsNot.not(405));
     }
 
 
     @Test
     public void respond_with_a_HTTP_status_code_of_500_and_a_Internal_Server_Error_if_user_callback_throws_an_exception() {
-        final String ANY_ERROR_MESSAGE = "Any error message";
+        String ANY_ERROR_MESSAGE = "Any error message";
 
         String path = "/boom";
         app.get(path, (req, res) -> {
@@ -206,5 +205,16 @@ public class DarwinShould {
         } catch (IOException ex) {
             throw new RuntimeException("Could not find available port", ex);
         }
+    }
+
+    private static String extractNamesFrom(HttpRequest httpRequest) {
+        var names = new StringBuilder();
+        for (QueryParameter queryParameter : httpRequest.queryParameters()) {
+            if (!names.toString().isEmpty()) {
+                names.append(" and ");
+            }
+            names.append(queryParameter.value());
+        }
+        return names.toString();
     }
 }

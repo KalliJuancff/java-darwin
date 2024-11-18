@@ -29,20 +29,20 @@ public class DarwinShould {
             res.convertTo(HttpResponse.created());
         });
         app.get("/greet", (req, res) -> {
-            StringBuilder names = extractNamesFrom(req);
+            String names = extractNamesFrom(req);
             res.convertTo(HttpResponse.ok("Hi, " + names + "!"));
         });
     }
 
-    private static StringBuilder extractNamesFrom(HttpRequest httpRequest) {
-        StringBuilder names = new StringBuilder();
+    private static String extractNamesFrom(HttpRequest httpRequest) {
+        var names = new StringBuilder();
         for (QueryParameter queryParameter : httpRequest.queryParameters()) {
             if (!names.toString().isEmpty()) {
                 names.append(" and ");
             }
             names.append(queryParameter.value());
         }
-        return names;
+        return names.toString();
     }
 
 

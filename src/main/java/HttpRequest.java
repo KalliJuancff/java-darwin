@@ -42,7 +42,7 @@ public class HttpRequest {
         return uri.queryParameters();
     }
 
-    public String pathParameter() {
+    public String pathParameters() {
         return "";
     }
 

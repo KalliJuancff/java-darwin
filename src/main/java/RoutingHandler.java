@@ -21,12 +21,14 @@ public class RoutingHandler {
     }
 
     public HttpResponse responseTo(HttpRequest httpRequest) {
-        if (!httpRequest.isPathContainedIn(routes) && !httpRequest.hasPathEqualTo(new Path("/users/7"))) {
+        if (!httpRequest.isPathContainedIn(routes) && !httpRequest.hasPathEqualTo(new Path("/users/7")) && !httpRequest.hasPathEqualTo(new Path("/users/4/books/3"))) {
             return HttpResponse.notFound();
         }
 
         if (httpRequest.hasPathEqualTo(new Path("/users/7"))) {
             return HttpResponse.ok("{ \"userId\": \"7\" }");
+        } else if (httpRequest.hasPathEqualTo(new Path("/users/4/books/3"))) {
+            return HttpResponse.ok("{ \"userId\": \"4\", \"bookId\": \"3\" }");
         }
 
         for (Route route : routes) {

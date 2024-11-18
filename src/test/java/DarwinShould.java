@@ -194,7 +194,7 @@ public class DarwinShould {
     @Test
     public void fetches_a_single_route_parameter() {
         app.get("/users/{userId}", (req, res) -> {
-            res.convertTo(HttpResponse.ok(req.pathParameter()));
+            res.convertTo(HttpResponse.ok(req.pathParameters()));
         });
         String expectedBody = "{ \"userId\": \"7\" }";
 
@@ -203,6 +203,24 @@ public class DarwinShould {
         given()
                 .when()
                 .get("/users/7")
+                .then()
+                .statusCode(200)
+                .statusLine("HTTP/1.1 200 OK")
+                .body(equalTo(expectedBody));
+    }
+
+    @Test
+    public void fetches_more_than_one_route_parameter() {
+        app.get("/users/{userId}/books/{bookId}", (req, res) -> {
+            res.convertTo(HttpResponse.ok(req.pathParameters()));
+        });
+        String expectedBody = "{ \"userId\": \"4\", \"bookId\": \"3\" }";
+
+        listen();
+
+        given()
+                .when()
+                .get("/users/4/books/3")
                 .then()
                 .statusCode(200)
                 .statusLine("HTTP/1.1 200 OK")

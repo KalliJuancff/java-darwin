@@ -5,8 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class RoutingCoordinatorShould {
     @Test
     public void return_404_when_no_endpoint_matches() {
-        var httpRequest = HttpRequest.from("GET /unknown HTTP/1.1");
         RoutingCoordinator sut = new RoutingCoordinator();
+        var httpRequest = HttpRequest.from("GET /unknown HTTP/1.1");
 
         HttpResponse httpResponse = sut.responseTo(httpRequest);
 
@@ -14,10 +14,10 @@ public class RoutingCoordinatorShould {
     }
 
     @Test
-    public void does_not_return_404_when_endpoint_matches_and_http_method_is_GET() {
-        var httpRequest = HttpRequest.from("GET /known HTTP/1.1");
+    public void does_not_return_404_when_an_endpoint_matches_v1() {
         RoutingCoordinator sut = new RoutingCoordinator();
         sut.addGetRoute("/known", (req, res) -> res.convertTo(HttpResponse.ok()));
+        var httpRequest = HttpRequest.from("GET /known HTTP/1.1");
 
         HttpResponse httpResponse = sut.responseTo(httpRequest);
 
@@ -25,10 +25,10 @@ public class RoutingCoordinatorShould {
     }
 
     @Test
-    public void does_not_return_404_when_endpoint_matches_and_http_method_is_POST() {
-        var httpRequest = HttpRequest.from("POST /known HTTP/1.1");
+    public void does_not_return_404_when_an_endpoint_matches_v2() {
         RoutingCoordinator sut = new RoutingCoordinator();
         sut.addPostRoute("/known", (req, res) -> res.convertTo(HttpResponse.ok()));
+        var httpRequest = HttpRequest.from("POST /known HTTP/1.1");
 
         HttpResponse httpResponse = sut.responseTo(httpRequest);
 
@@ -36,10 +36,10 @@ public class RoutingCoordinatorShould {
     }
 
     @Test
-    public void does_not_return_404_when_endpoint_matches_and_http_method_is_DELETE() {
-        var httpRequest = HttpRequest.from("DELETE /known HTTP/1.1");
+    public void does_not_return_404_when_an_endpoint_matches_v3() {
         RoutingCoordinator sut = new RoutingCoordinator();
         sut.addDeleteRoute("/known", (req, res) -> res.convertTo(HttpResponse.ok()));
+        var httpRequest = HttpRequest.from("DELETE /known HTTP/1.1");
 
         HttpResponse httpResponse = sut.responseTo(httpRequest);
 

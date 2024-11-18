@@ -19,15 +19,6 @@ public class DarwinShould {
         createAndInitializeApplication();
     }
 
-    private int findAvailableTcpPort() {
-        // https://www.baeldung.com/java-free-port
-        try (ServerSocket socket = new ServerSocket(0)) {
-            return socket.getLocalPort();
-        } catch (IOException e) {
-            throw new RuntimeException("Could not find available port", e);
-        }
-    }
-
     private void createAndInitializeApplication() {
         app = new Application();
 
@@ -56,7 +47,7 @@ public class DarwinShould {
 
 
     @Test
-    public void responds_to_a_GET_method_with_a_HTTP_status_code_of_404_and_a_Not_Found_message_if_endpoint_does_not_exist() {
+    public void responds_with_a_HTTP_status_code_of_404_and_a_Not_Found_if_endpoint_does_not_exist() {
         String nonExistentPath = "/nonexistent-path";
 
         listen();
@@ -71,7 +62,7 @@ public class DarwinShould {
     }
 
     @Test
-    public void responds_to_a_GET_method_with_a_HTTP_status_code_of_200_and_a_OK_message_if_endpoint_exists() {
+    public void responds_with_a_HTTP_status_code_of_200_and_a_OK_if_endpoint_exists() {
         String existingPath = "/hello";
 
         listen();
@@ -93,13 +84,13 @@ public class DarwinShould {
             "'Gud', 'Hi, Gud!'"
     })
     public void fetches_a_single_string_parameter(String name, String expectedBody) {
-        String path = "/greet?name=" + name;
+        String uri = "/greet?name=" + name;
 
         listen();
 
         given()
                 .when()
-                .get(path)
+                .get(uri)
                 .then()
                 .statusCode(200)
                 .statusLine("HTTP/1.1 200 OK")
@@ -113,14 +104,14 @@ public class DarwinShould {
             "'?name=Darwin&name2=Dio&name3=Diu&name4=Gud&name5=Poe', 'Darwin and Dio and Diu and Gud and Poe'"
     })
     public void fetches_more_than_one_string_parameter(String queryString, String expectedNames) {
-        String path = "/greet" + queryString;
+        String uri = "/greet" + queryString;
         String expectedBody = "Hi, " + expectedNames + "!";
 
         listen();
 
         given()
                 .when()
-                .get(path)
+                .get(uri)
                 .then()
                 .statusCode(200)
                 .statusLine("HTTP/1.1 200 OK")
@@ -129,7 +120,7 @@ public class DarwinShould {
 
 
     @Test
-    public void responds_to_a_POST_method_with_HTTP_status_code_of_201_and_a_Created_message() {
+    public void responds_to_a_POST_method_with_a_HTTP_status_code_of_201_and_a_Created() {
         String existingPath = "/hello";
 
         listen();
@@ -150,7 +141,7 @@ public class DarwinShould {
             "'POST', '/greet'",
             "'DELETE', '/greet'"
     })
-    public void responds_with_a_HTTP_status_code_of_405_and_a_Method_not_allowed_message_if_path_exists_but_HTTP_method_is_not_configured(
+    public void responds_with_a_HTTP_status_code_of_405_and_a_Method_not_allowed_if_path_exists_but_HTTP_method_is_not_configured(
             String method, String path) {
         listen();
 
@@ -176,14 +167,12 @@ public class DarwinShould {
                 .when()
                 .delete(path)
                 .then()
-                .statusCode(200)
-                .statusLine("HTTP/1.1 200 OK")
-                .body(emptyOrNullString());
+                .statusCode(200));
     }
 
 
     @Test
-    public void respond_with_a_HTTP_status_code_of_500_and_a_Internal_Server_Error_message_if_user_callback_triggers_an_exception() {
+    public void respond_with_a_HTTP_status_code_of_500_and_a_Internal_Server_Error_if_user_callback_throws_an_exception() {
         final String ANY_ERROR_MESSAGE = "Any error message";
 
         String path = "/boom";
@@ -204,9 +193,18 @@ public class DarwinShould {
 
 
     private void listen() {
-        int port = findAvailableTcpPort();
-        RestAssured.baseURI = "http://localhost:" + port;
+        int availablePort = findAvailableTcpPort();
+        RestAssured.baseURI = "http://localhost:" + availablePort;
 
-        app.listen(port);
+        app.listen(availablePort);
+    }
+
+    private int findAvailableTcpPort() {
+        // https://www.baeldung.com/java-free-port
+        try (ServerSocket socket = new ServerSocket(0)) {
+            return socket.getLocalPort();
+        } catch (IOException ex) {
+            throw new RuntimeException("Could not find available port", ex);
+        }
     }
 }

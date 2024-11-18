@@ -4,19 +4,19 @@ import java.net.Socket;
 import java.util.function.BiConsumer;
 
 public class Application {
-    private final RoutingHandler routingHandler = new RoutingHandler();
+    private final RoutingCoordinator routingCoordinator = new RoutingCoordinator();
     private int port;
 
     public void get(String path, BiConsumer<HttpRequest, HttpResponse> handler) {
-        routingHandler.addGetRoute(path, handler);
+        routingCoordinator.addGetRoute(path, handler);
     }
 
     public void post(String path, BiConsumer<HttpRequest, HttpResponse> handler) {
-        routingHandler.addPostRoute(path, handler);
+        routingCoordinator.addPostRoute(path, handler);
     }
 
     public void delete(String path, BiConsumer<HttpRequest, HttpResponse> handler) {
-        routingHandler.addDeleteRoute(path, handler);
+        routingCoordinator.addDeleteRoute(path, handler);
     }
 
     public void listen(int port) {
@@ -59,7 +59,7 @@ public class Application {
     }
 
     private HttpResponse createHttpResponse(HttpRequest httpRequest) {
-        return routingHandler.responseTo(httpRequest);
+        return routingCoordinator.responseTo(httpRequest);
     }
 
     private static void writeHttpResponse(Socket socket, HttpResponse response) throws IOException {

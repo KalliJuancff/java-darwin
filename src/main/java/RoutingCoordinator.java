@@ -1,6 +1,6 @@
 import java.util.function.BiConsumer;
 
-public class RoutingHandler {
+public class RoutingCoordinator {
     private final Routes routes = new Routes();
 
     public void addGetRoute(String path, BiConsumer<HttpRequest, HttpResponse> handler) {

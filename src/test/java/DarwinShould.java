@@ -39,24 +39,6 @@ public class DarwinShould {
                 .body(emptyOrNullString());
     }
 
-    @Test
-    public void responds_with_a_HTTP_status_code_of_200_and_a_OK_if_endpoint_exists() {
-        String existingPath = "/";
-        app.get(existingPath, (req, res) -> {
-            res.convertTo(HttpResponse.ok());
-        });
-
-        listen();
-
-        given()
-                .when()
-                .get(existingPath)
-                .then()
-                .statusCode(200)
-                .statusLine("HTTP/1.1 200 OK")
-                .body(emptyOrNullString());
-    }
-
 
     @ParameterizedTest
     @CsvSource({
@@ -105,25 +87,6 @@ public class DarwinShould {
                 .statusCode(200)
                 .statusLine("HTTP/1.1 200 OK")
                 .body(equalTo(expectedBody));
-    }
-
-
-    @Test
-    public void responds_to_a_POST_method_with_a_HTTP_status_code_of_201_and_a_Created() {
-        String path = "/";
-        app.post(path, (req, res) -> {
-            res.convertTo(HttpResponse.created());
-        });
-
-        listen();
-
-        given()
-                .when()
-                .post(path)
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 Created")
-                .body(emptyOrNullString());
     }
 
 

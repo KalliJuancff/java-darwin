@@ -42,16 +42,17 @@ public class DarwinShould {
 
     @ParameterizedTest
     @CsvSource({
-            "'Darwin', 'Hi, Darwin!'",
-            "'Dio', 'Hi, Dio!'",
-            "'Gud', 'Hi, Gud!'"
+            "Darwin",
+            "Dio",
+            "Gud"
     })
-    public void fetches_a_single_string_parameter(String name, String expectedBody) {
+    public void fetches_a_single_string_parameter(String name) {
         String uri = "/greet" + "?name=" + name;
         app.get("/greet", (req, res) -> {
             String names = extractNamesFrom(req);
             res.convertTo(HttpResponse.ok("Hi, " + names + "!"));
         });
+        String expectedBody = "Hi, " + name + "!";
 
         listen();
 

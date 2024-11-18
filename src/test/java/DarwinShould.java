@@ -92,18 +92,18 @@ public class DarwinShould {
 
     @ParameterizedTest
     @CsvSource({
+            "'GET', " + HELLO_PATH,
             "'DELETE', " + HELLO_PATH,
             "'POST', " + GREET_PATH,
             "'DELETE', " + GREET_PATH
     })
     public void responds_with_a_HTTP_status_code_of_405_and_a_Method_not_allowed_if_path_exists_but_HTTP_method_is_not_configured(
             String method, String path) {
-        app.get(HELLO_PATH, (req, res) -> {
-            res.convertTo(HttpResponse.ok());
+        app.post(HELLO_PATH, (req, res) -> {
+            res.convertTo(HttpResponse.created());
         });
         app.get(GREET_PATH, (req, res) -> {
-            String names = extractNamesFrom(req);
-            res.convertTo(HttpResponse.ok("Hi, " + names + "!"));
+            res.convertTo(HttpResponse.ok("Hello, world!"));
         });
 
         listen();

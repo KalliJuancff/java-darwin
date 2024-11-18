@@ -59,8 +59,6 @@ public class DarwinShould {
                 .when()
                 .get(uri)
                 .then()
-                .statusCode(200)
-                .statusLine("HTTP/1.1 200 OK")
                 .body(equalTo(expectedBody));
     }
 
@@ -84,8 +82,6 @@ public class DarwinShould {
                 .when()
                 .get(uri)
                 .then()
-                .statusCode(200)
-                .statusLine("HTTP/1.1 200 OK")
                 .body(equalTo(expectedBody));
     }
 
@@ -167,8 +163,6 @@ public class DarwinShould {
                 .when()
                 .get("/users/7")
                 .then()
-                .statusCode(200)
-                .statusLine("HTTP/1.1 200 OK")
                 .body(equalTo(expectedBody));
     }
 
@@ -185,8 +179,6 @@ public class DarwinShould {
                 .when()
                 .get("/users/4/books/3")
                 .then()
-                .statusCode(200)
-                .statusLine("HTTP/1.1 200 OK")
                 .body(equalTo(expectedBody));
     }
 

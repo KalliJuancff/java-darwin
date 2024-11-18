@@ -68,4 +68,20 @@ public class RoutingCoordinatorShould {
 
         assertThat(httpResponse.statusCode()).isEqualTo(405);
     }
+
+
+    @Test
+    public void return_500_when_user_callback_throws_an_exception() {
+        final String ANY_EXCEPTION_MESSAGE = "Something went wrong";
+        RoutingCoordinator sut = new RoutingCoordinator();
+        sut.addGetRoute("/", (req, res) -> {
+            throw new RuntimeException(ANY_EXCEPTION_MESSAGE);
+        });
+        var httpRequest = HttpRequest.from("GET / HTTP/1.1");
+
+        HttpResponse httpResponse = sut.responseTo(httpRequest);
+
+        assertThat(httpResponse.statusCode()).isEqualTo(500);
+        assertThat(httpResponse.body()).isEqualTo("Error: '" + ANY_EXCEPTION_MESSAGE + "'");
+    }
 }

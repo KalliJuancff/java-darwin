@@ -48,6 +48,10 @@ public class HttpResponse {
         return httpStatus.code();
     }
 
+    public String body() {
+        return responseBody.toString();
+    }
+
     public void convertTo(HttpResponse httpResponse) {
         httpStatus = httpResponse.httpStatus;
         responseBody = httpResponse.responseBody;

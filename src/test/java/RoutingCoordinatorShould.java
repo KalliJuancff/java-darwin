@@ -14,7 +14,7 @@ public class RoutingCoordinatorShould {
     }
 
     @Test
-    public void does_not_return_404_when_an_endpoint_matches_v1() {
+    public void does_not_return_404_when_an_endpoint_matches_because_get_route_was_added() {
         RoutingCoordinator sut = new RoutingCoordinator();
         sut.addGetRoute("/known", (req, res) -> res.convertTo(HttpResponse.ok()));
         var httpRequest = HttpRequest.from("GET /known HTTP/1.1");
@@ -25,7 +25,7 @@ public class RoutingCoordinatorShould {
     }
 
     @Test
-    public void does_not_return_404_when_an_endpoint_matches_v2() {
+    public void does_not_return_404_when_an_endpoint_matches_because_post_route_was_added() {
         RoutingCoordinator sut = new RoutingCoordinator();
         sut.addPostRoute("/known", (req, res) -> res.convertTo(HttpResponse.ok()));
         var httpRequest = HttpRequest.from("POST /known HTTP/1.1");
@@ -36,7 +36,7 @@ public class RoutingCoordinatorShould {
     }
 
     @Test
-    public void does_not_return_404_when_an_endpoint_matches_v3() {
+    public void does_not_return_404_when_an_endpoint_matches_because_delete_route_was_added() {
         RoutingCoordinator sut = new RoutingCoordinator();
         sut.addDeleteRoute("/known", (req, res) -> res.convertTo(HttpResponse.ok()));
         var httpRequest = HttpRequest.from("DELETE /known HTTP/1.1");

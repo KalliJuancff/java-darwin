@@ -68,4 +68,15 @@ public class RoutingCoordinatorShould {
 
         assertThat(httpResponse.statusCode()).isEqualTo(405);
     }
+
+    @Test
+    public void return_405_when_an_endpoint_matches_but_not_the_http_method_v3() {
+        RoutingCoordinator sut = new RoutingCoordinator();
+        sut.addPostRoute("/known", (req, res) -> res.convertTo(HttpResponse.ok()));
+        var httpRequest = HttpRequest.from("GET /known HTTP/1.1");
+
+        HttpResponse httpResponse = sut.responseTo(httpRequest);
+
+        assertThat(httpResponse.statusCode()).isEqualTo(405);
+    }
 }

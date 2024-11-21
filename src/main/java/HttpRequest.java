@@ -32,10 +32,6 @@ public class HttpRequest {
         return uri.path();
     }
 
-    public boolean hasPathEqualTo(Path path) {
-        return uri.path().equals(path);
-    }
-
     public QueryParameters queryParameters() {
         return uri.queryParameters();
     }

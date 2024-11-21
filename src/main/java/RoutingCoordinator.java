@@ -26,11 +26,11 @@ public class RoutingCoordinator {
             return HttpResponse.notFound();
         }
 
-        if (httpRequest.hasPathEqualTo(new Path("/users/7"))) {
+        if (httpRequest.path().equals(new Path("/users/7"))) {
             return HttpResponse.ok("{ \"userId\": \"7\" }");
-        } else if (httpRequest.hasPathEqualTo(new Path("/users/4/books/3"))) {
+        } else if (httpRequest.path().equals(new Path("/users/4/books/3"))) {
             return HttpResponse.ok("{ \"userId\": \"4\", \"bookId\": \"3\" }");
-        } else if (httpRequest.hasPathEqualTo(new Path("/products/34"))) {
+        } else if (httpRequest.path().equals(new Path("/products/34"))) {
             String productId = httpRequest.pathParameter("productId");
             return HttpResponse.ok("{ \"productId\": \"" + productId + "\" }");
         }

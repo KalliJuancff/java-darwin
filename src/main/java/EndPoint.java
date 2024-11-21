@@ -19,6 +19,6 @@ public class EndPoint {
     }
 
     public boolean matches(HttpRequest httpRequest) {
-        return httpRequest.hasPathEqualTo(path) && httpRequest.method().equals(method);
+        return httpRequest.path().equals(path) && httpRequest.method().equals(method);
     }
 }

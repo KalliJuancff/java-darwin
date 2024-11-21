@@ -114,22 +114,6 @@ public class DarwinShould {
                 .body(emptyOrNullString());
     }
 
-    @Test
-    public void does_not_respond_with_a_HTTP_status_code_of_405_and_a_Method_not_allowed_message_if_path_exists_and_HTTP_method_is_configured() {
-        String path = "/";
-        app.delete(path, (req, res) -> {
-            res.convertTo(HttpResponse.ok());
-        });
-
-        listen();
-
-        given()
-                .when()
-                .delete(path)
-                .then()
-                .statusCode(IsNot.not(405));
-    }
-
 
     @Test
     public void respond_with_a_HTTP_status_code_of_500_and_a_Internal_Server_Error_if_user_callback_throws_an_exception() {

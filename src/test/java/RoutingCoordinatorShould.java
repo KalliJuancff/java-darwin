@@ -64,10 +64,35 @@ public class RoutingCoordinatorShould {
 
 
     @Test
-    public void return_405_when_an_endpoint_matches_but_not_the_http_method() {
+    public void return_405_when_an_endpoint_matches_but_not_GET_http_method() {
+        var sut = new RoutingCoordinator();
+        sut.addPostRoute("/", (req, res) -> res.convertTo(HttpResponse.ok()));
+        sut.addDeleteRoute("/", (req, res) -> res.convertTo(HttpResponse.ok()));
+        var httpRequest = HttpRequest.from("GET / HTTP/1.1");
+
+        HttpResponse httpResponse = sut.responseTo(httpRequest);
+
+        assertThat(httpResponse.statusCode()).isEqualTo(405);
+    }
+
+    @Test
+    public void return_405_when_an_endpoint_matches_but_not_POST_http_method() {
         var sut = new RoutingCoordinator();
         sut.addGetRoute("/", (req, res) -> res.convertTo(HttpResponse.ok()));
+        sut.addDeleteRoute("/", (req, res) -> res.convertTo(HttpResponse.ok()));
         var httpRequest = HttpRequest.from("POST / HTTP/1.1");
+
+        HttpResponse httpResponse = sut.responseTo(httpRequest);
+
+        assertThat(httpResponse.statusCode()).isEqualTo(405);
+    }
+
+    @Test
+    public void return_405_when_an_endpoint_matches_but_not_DELETE_http_method() {
+        var sut = new RoutingCoordinator();
+        sut.addGetRoute("/", (req, res) -> res.convertTo(HttpResponse.ok()));
+        sut.addPostRoute("/", (req, res) -> res.convertTo(HttpResponse.ok()));
+        var httpRequest = HttpRequest.from("DELETE / HTTP/1.1");
 
         HttpResponse httpResponse = sut.responseTo(httpRequest);
 

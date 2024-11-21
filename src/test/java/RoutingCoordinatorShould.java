@@ -98,4 +98,18 @@ public class RoutingCoordinatorShould {
 
         assertThat(httpResponse.statusCode()).isEqualTo(405);
     }
+
+
+    @Test
+    public void fetch_single_path_parameter() {
+        var sut = new RoutingCoordinator();
+        sut.addGetRoute("/products/{productId}", (req, res) ->
+                res.convertTo(HttpResponse.ok("{ \"productId\": \"" + req.pathParameter("productId") + "\" }")));
+        var httpRequest = HttpRequest.from("GET /products/34 HTTP/1.1");
+
+        HttpResponse httpResponse = sut.responseTo(httpRequest);
+
+        assertThat(httpResponse.statusCode()).isEqualTo(200);
+        assertThat(httpResponse.body()).isEqualTo("{ \"productId\": \"34\" }");
+    }
 }

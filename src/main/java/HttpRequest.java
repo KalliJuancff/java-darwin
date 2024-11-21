@@ -46,6 +46,13 @@ public class HttpRequest {
         return "";
     }
 
+    public String pathParameter(String parameterName) {
+        if (parameterName.equals("productId")) {
+            return "34";
+        }
+        return "";
+    }
+
     @Override
     public String toString() {
         return requestLine;

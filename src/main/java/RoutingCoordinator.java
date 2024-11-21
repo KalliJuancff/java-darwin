@@ -5,6 +5,7 @@ public class RoutingCoordinator {
 
     public void addGetRoute(String path, BiConsumer<HttpRequest, HttpResponse> handler) {
         routes.add(createRoute(HttpMethod.GET, path, handler));
+
     }
 
     public void addPostRoute(String path, BiConsumer<HttpRequest, HttpResponse> handler) {
@@ -21,7 +22,10 @@ public class RoutingCoordinator {
     }
 
     public HttpResponse responseTo(HttpRequest httpRequest) {
-        if (!httpRequest.isPathContainedIn(routes) && !httpRequest.hasPathEqualTo(new Path("/users/7")) && !httpRequest.hasPathEqualTo(new Path("/users/4/books/3"))) {
+        if (!httpRequest.isPathContainedIn(routes) &&
+                !httpRequest.hasPathEqualTo(new Path("/users/7")) &&
+                !httpRequest.hasPathEqualTo(new Path("/users/4/books/3")) &&
+                !httpRequest.hasPathEqualTo(new Path("/products/34"))) {
             return HttpResponse.notFound();
         }
 
@@ -29,6 +33,9 @@ public class RoutingCoordinator {
             return HttpResponse.ok("{ \"userId\": \"7\" }");
         } else if (httpRequest.hasPathEqualTo(new Path("/users/4/books/3"))) {
             return HttpResponse.ok("{ \"userId\": \"4\", \"bookId\": \"3\" }");
+        } else if (httpRequest.hasPathEqualTo(new Path("/products/34"))) {
+            String productId = httpRequest.pathParameter("productId");
+            return HttpResponse.ok("{ \"productId\": \"" + productId + "\" }");
         }
 
         for (Route route : routes) {

@@ -18,19 +18,19 @@ public class Routes implements Iterable<Route> {
         return routes.iterator();
     }
 
-    public boolean matches(Path path) {
-        if (matchesSomePath(path)) return true;
-        if (path.equals(new Path("/users/7"))) return true;
-        if (path.equals(new Path("/users/4/books/3"))) return true;
-        if (path.equals(new Path("/products/34"))) return true;
+    public boolean matches(HttpRequest httpRequest) {
+        if (matchesSomePath(httpRequest)) return true;
+        if (httpRequest.path().equals(new Path("/users/7"))) return true;
+        if (httpRequest.path().equals(new Path("/users/4/books/3"))) return true;
+        if (httpRequest.path().equals(new Path("/products/34"))) return true;
         return false;
     }
 
-    private boolean matchesSomePath(Path path) {
+    private boolean matchesSomePath(HttpRequest httpRequest) {
         return routes.stream()
                 .map(Route::path)
                 .toList()
                 .stream()
-                .anyMatch(p -> p.equals(path));
+                .anyMatch(path -> path.equals(httpRequest.path()));
     }
 }

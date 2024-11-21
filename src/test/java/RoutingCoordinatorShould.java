@@ -48,18 +48,6 @@ public class RoutingCoordinatorShould {
 
 
     @Test
-    public void return_405_when_an_endpoint_matches_but_not_the_http_method() {
-        var sut = new RoutingCoordinator();
-        sut.addGetRoute("/", (req, res) -> res.convertTo(HttpResponse.ok()));
-        var httpRequest = HttpRequest.from("POST / HTTP/1.1");
-
-        HttpResponse httpResponse = sut.responseTo(httpRequest);
-
-        assertThat(httpResponse.statusCode()).isEqualTo(405);
-    }
-
-
-    @Test
     public void return_500_when_user_callback_throws_an_exception() {
         final String ANY_EXCEPTION_MESSAGE = "Something went wrong";
         var sut = new RoutingCoordinator();
@@ -72,5 +60,17 @@ public class RoutingCoordinatorShould {
 
         assertThat(httpResponse.statusCode()).isEqualTo(500);
         assertThat(httpResponse.body()).isEqualTo("Error: '" + ANY_EXCEPTION_MESSAGE + "'");
+    }
+
+
+    @Test
+    public void return_405_when_an_endpoint_matches_but_not_the_http_method() {
+        var sut = new RoutingCoordinator();
+        sut.addGetRoute("/", (req, res) -> res.convertTo(HttpResponse.ok()));
+        var httpRequest = HttpRequest.from("POST / HTTP/1.1");
+
+        HttpResponse httpResponse = sut.responseTo(httpRequest);
+
+        assertThat(httpResponse.statusCode()).isEqualTo(405);
     }
 }

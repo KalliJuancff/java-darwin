@@ -46,13 +46,13 @@ public class DarwinShould {
             "Dio",
             "Gud"
     })
-    public void fetch_single_string_parameter(String name) {
-        String uri = "/greet" + "?name=" + name;
+    public void fetch_single_string_parameter(String expectedName) {
+        String uri = "/greet" + "?name=" + expectedName;
         app.get("/greet", (req, res) -> {
             String name = extractNamesFrom(req);
             res.convertTo(HttpResponse.ok("Hi, " + name + "!"));
         });
-        String expectedBody = "Hi, " + name + "!";
+        String expectedBody = "Hi, " + expectedName + "!";
 
         listen();
 

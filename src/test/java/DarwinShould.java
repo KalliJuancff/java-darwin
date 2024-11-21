@@ -25,7 +25,7 @@ public class DarwinShould {
 
 
     @Test
-    public void responds_with_a_HTTP_status_code_of_404_and_a_Not_Found_if_endpoint_does_not_exist() {
+    public void respond_with_a_HTTP_status_code_of_404_and_a_Not_Found_if_endpoint_does_not_exist() {
         String nonExistentPath = "/nonexistent-path";
 
         listen();
@@ -46,7 +46,7 @@ public class DarwinShould {
             "Dio",
             "Gud"
     })
-    public void fetches_a_single_string_parameter(String name) {
+    public void fetch_single_string_parameter(String name) {
         String uri = "/greet" + "?name=" + name;
         app.get("/greet", (req, res) -> {
             String names = extractNamesFrom(req);
@@ -69,7 +69,7 @@ public class DarwinShould {
             "'?name=Darwin&name2=Dio&name3=Gud', 'Darwin and Dio and Gud'",
             "'?name=Darwin&name2=Dio&name3=Diu&name4=Gud&name5=Poe', 'Darwin and Dio and Diu and Gud and Poe'"
     })
-    public void fetches_more_than_one_string_parameter(String queryString, String expectedNames) {
+    public void fetch_more_than_one_string_parameter(String queryString, String expectedNames) {
         String uri = "/greet" + queryString;
         String expectedBody = "Hi, " + expectedNames + "!";
         app.get("/greet", (req, res) -> {
@@ -94,7 +94,7 @@ public class DarwinShould {
             "'POST', " + GREET_PATH,
             "'DELETE', " + GREET_PATH
     })
-    public void responds_with_a_HTTP_status_code_of_405_and_a_Method_not_allowed_if_path_exists_but_HTTP_method_is_not_configured(
+    public void respond_with_a_HTTP_status_code_of_405_and_a_Method_not_allowed_if_path_exists_but_HTTP_method_is_not_configured(
             String method, String path) {
         app.post(HELLO_PATH, (req, res) -> {
             res.convertTo(HttpResponse.created());
@@ -152,7 +152,7 @@ public class DarwinShould {
 
 
     @Test
-    public void fetches_a_single_route_parameter() {
+    public void fetch_a_single_route_parameter() {
         app.get("/users/{userId}", (req, res) -> {
             res.convertTo(HttpResponse.ok(req.pathParameters()));
         });
@@ -168,7 +168,7 @@ public class DarwinShould {
     }
 
     @Test
-    public void fetches_more_than_one_route_parameter() {
+    public void fetch_more_than_one_route_parameter() {
         app.get("/users/{userId}/books/{bookId}", (req, res) -> {
             res.convertTo(HttpResponse.ok(req.pathParameters()));
         });

@@ -28,12 +28,6 @@ public class HttpRequest {
         return method;
     }
 
-    public boolean isPathContainedIn(Routes routes) {
-        return routes.allPaths()
-                .stream()
-                .anyMatch(this::hasPathEqualTo);
-    }
-
     public boolean hasPathEqualTo(Path path) {
         return uri.path().equals(path);
     }

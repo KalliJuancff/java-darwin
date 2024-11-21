@@ -22,10 +22,7 @@ public class RoutingCoordinator {
     }
 
     public HttpResponse responseTo(HttpRequest httpRequest) {
-        if (!httpRequest.isPathContainedIn(routes) &&
-                !httpRequest.hasPathEqualTo(new Path("/users/7")) &&
-                !httpRequest.hasPathEqualTo(new Path("/users/4/books/3")) &&
-                !httpRequest.hasPathEqualTo(new Path("/products/34"))) {
+        if (!routes.matches(httpRequest)) {
             return HttpResponse.notFound();
         }
 

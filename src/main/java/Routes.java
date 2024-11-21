@@ -13,14 +13,24 @@ public class Routes implements Iterable<Route> {
         routes.add(route);
     }
 
-    public List<Path> allPaths() {
-        return routes.stream()
-                .map(Route::path)
-                .toList();
-    }
-
     @Override
     public Iterator<Route> iterator() {
         return routes.iterator();
+    }
+
+    public boolean matches(HttpRequest httpRequest) {
+        if (matchesSomePath(httpRequest)) return true;
+        if (httpRequest.hasPathEqualTo(new Path("/users/7"))) return true;
+        if (httpRequest.hasPathEqualTo(new Path("/users/4/books/3"))) return true;
+        if (httpRequest.hasPathEqualTo(new Path("/products/34"))) return true;
+        return false;
+    }
+
+    private boolean matchesSomePath(HttpRequest httpRequest) {
+        return routes.stream()
+                .map(Route::path)
+                .toList()
+                .stream()
+                .anyMatch(httpRequest::hasPathEqualTo);
     }
 }

@@ -22,7 +22,7 @@ public class RoutingCoordinator {
     }
 
     public HttpResponse responseTo(HttpRequest httpRequest) {
-        if (!routes.matches(httpRequest)) {
+        if (!routes.matches(httpRequest.path())) {
             return HttpResponse.notFound();
         }
 

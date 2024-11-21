@@ -28,6 +28,10 @@ public class HttpRequest {
         return method;
     }
 
+    public Path path() {
+        return uri.path();
+    }
+
     public boolean hasPathEqualTo(Path path) {
         return uri.path().equals(path);
     }
